@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { bookmark, share } from "lucide-react";
+import { Bookmark, Share } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -75,7 +75,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
             className="w-8 h-8 p-0 bg-white/90 hover:bg-white border-0 shadow-md"
             onClick={handleShare}
           >
-            <share className="w-3 h-3" />
+            <Share className="w-3 h-3" />
           </Button>
           <Button
             size="sm"
@@ -87,7 +87,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
             }`}
             onClick={handleFavorite}
           >
-            <bookmark className={`w-3 h-3 ${isFavorite ? 'fill-current' : ''}`} />
+            <Bookmark className={`w-3 h-3 ${isFavorite ? 'fill-current' : ''}`} />
           </Button>
         </div>
         

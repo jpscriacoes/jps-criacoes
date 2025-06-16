@@ -1,5 +1,5 @@
 
-import { bookmark } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
@@ -27,7 +27,7 @@ const Header = ({ title, showFavorites = false, onFavoritesClick, favoriteCount 
             onClick={onFavoritesClick}
             className="relative bg-white/50 border-pink-200 hover:bg-pink-50 transition-all duration-200"
           >
-            <bookmark className="w-4 h-4 mr-2" />
+            <Bookmark className="w-4 h-4 mr-2" />
             Favoritos
             {favoriteCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
