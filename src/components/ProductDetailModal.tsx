@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { bookmark, share, zoom-in, zoom-out } from "lucide-react";
+import { Bookmark, Share, ZoomIn, ZoomOut } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -82,7 +82,7 @@ const ProductDetailModal = ({
                 className="absolute top-3 right-3 bg-white/90 hover:bg-white"
                 onClick={() => setIsZoomed(!isZoomed)}
               >
-                {isZoomed ? <zoom-out className="w-4 h-4" /> : <zoom-in className="w-4 h-4" />}
+                {isZoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
               </Button>
             </div>
 
@@ -170,7 +170,7 @@ const ProductDetailModal = ({
                     : 'border-pink-200 hover:bg-pink-50'
                 }`}
               >
-                <bookmark className={`w-4 h-4 mr-2 ${isFavorite ? 'fill-current' : ''}`} />
+                <Bookmark className={`w-4 h-4 mr-2 ${isFavorite ? 'fill-current' : ''}`} />
                 {isFavorite ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
               </Button>
               
@@ -179,7 +179,7 @@ const ProductDetailModal = ({
                 variant="outline"
                 className="border-purple-200 hover:bg-purple-50"
               >
-                <share className="w-4 h-4 mr-2" />
+                <Share className="w-4 h-4 mr-2" />
                 Compartilhar
               </Button>
             </div>
