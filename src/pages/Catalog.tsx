@@ -58,7 +58,7 @@ const Catalog = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <Header 
-        title="Catálogo" 
+        title="JPS CRIAÇÕES" 
         showFavorites 
         onFavoritesClick={handleFavoritesClick}
         favoriteCount={favorites.length}
