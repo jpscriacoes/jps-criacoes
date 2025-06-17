@@ -114,16 +114,9 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
           </Badge>
         </div>
         
-        <div className="flex items-center justify-between">
-          <p className="text-xs text-muted-foreground">
-            {product.occasion}
-          </p>
-          {product.price && (
-            <p className="font-bold text-pink-600">
-              R$ {product.price}
-            </p>
-          )}
-        </div>
+        <p className="text-xs text-muted-foreground">
+          {product.occasion}
+        </p>
       </CardContent>
     </Card>
   );

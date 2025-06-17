@@ -17,7 +17,7 @@ const Header = ({ title, showFavorites = false, onFavoritesClick, favoriteCount 
           <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
             {title}
           </h1>
-          <p className="text-xs text-muted-foreground">Topos & Decorações Artesanais</p>
+          <p className="text-xs text-muted-foreground">Personalizando Sonhos</p>
         </div>
         
         {showFavorites && (
