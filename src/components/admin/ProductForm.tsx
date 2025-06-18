@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Upload, X } from 'lucide-react';
 import { useCategories } from '@/hooks/useCategories';
-import { useCreateProduct, useUploadProductImage, Product } from '@/hooks/useProducts';
+import { useCreateProduct, useUpdateProduct, useUploadProductImage, Product } from '@/hooks/useProducts';
 import { toast } from '@/hooks/use-toast';
 
 interface ProductFormProps {
@@ -20,20 +20,36 @@ interface ProductFormProps {
 
 const ProductForm = ({ product, onSuccess, onCancel }: ProductFormProps) => {
   const [formData, setFormData] = useState({
-    name: product?.name || '',
-    description: product?.description || '',
-    category_id: product?.category_id || '',
-    material: product?.material || '',
-    occasion: product?.occasion || '',
-    theme: product?.theme || '',
-    featured: product?.featured || false,
+    name: '',
+    description: '',
+    category_id: '',
+    material: '',
+    occasion: '',
+    theme: '',
+    featured: false,
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(product?.image_url || null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const { data: categories } = useCategories();
   const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
   const uploadImage = useUploadProductImage();
+
+  useEffect(() => {
+    if (product) {
+      setFormData({
+        name: product.name,
+        description: product.description,
+        category_id: product.category_id,
+        material: product.material,
+        occasion: product.occasion,
+        theme: product.theme,
+        featured: product.featured,
+      });
+      setPreviewUrl(product.image_url);
+    }
+  }, [product]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -56,28 +72,39 @@ const ProductForm = ({ product, onSuccess, onCancel }: ProductFormProps) => {
       let imageUrl = product?.image_url || '';
       
       if (selectedFile) {
-        const tempId = Date.now().toString();
+        const tempId = product?.id || Date.now().toString();
         imageUrl = await uploadImage.mutateAsync({ 
           file: selectedFile, 
           productId: tempId 
         });
       }
 
-      await createProduct.mutateAsync({
-        ...formData,
-        image_url: imageUrl
-      });
-
-      toast({
-        title: "Produto criado com sucesso!",
-        description: "O produto foi adicionado ao catálogo.",
-      });
+      if (product) {
+        await updateProduct.mutateAsync({
+          id: product.id,
+          ...formData,
+          image_url: imageUrl
+        });
+        toast({
+          title: "Produto atualizado!",
+          description: "O produto foi atualizado com sucesso.",
+        });
+      } else {
+        await createProduct.mutateAsync({
+          ...formData,
+          image_url: imageUrl
+        });
+        toast({
+          title: "Produto criado!",
+          description: "O produto foi adicionado ao catálogo.",
+        });
+      }
 
       onSuccess?.();
     } catch (error) {
       toast({
-        title: "Erro ao criar produto",
-        description: "Ocorreu um erro ao criar o produto. Tente novamente.",
+        title: "Erro ao salvar produto",
+        description: "Ocorreu um erro ao salvar o produto. Tente novamente.",
         variant: "destructive",
       });
     }
@@ -218,10 +245,13 @@ const ProductForm = ({ product, onSuccess, onCancel }: ProductFormProps) => {
           <div className="flex gap-4 pt-4">
             <Button
               type="submit"
-              disabled={createProduct.isPending || uploadImage.isPending}
+              disabled={createProduct.isPending || updateProduct.isPending || uploadImage.isPending}
               className="bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600"
             >
-              {createProduct.isPending || uploadImage.isPending ? 'Salvando...' : 'Salvar Produto'}
+              {createProduct.isPending || updateProduct.isPending || uploadImage.isPending 
+                ? 'Salvando...' 
+                : product ? 'Atualizar Produto' : 'Salvar Produto'
+              }
             </Button>
             {onCancel && (
               <Button type="button" variant="outline" onClick={onCancel}>

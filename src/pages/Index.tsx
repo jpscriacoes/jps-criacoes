@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import ProductDetailModal from '@/components/ProductDetailModal';
+import CategoryCarousel from '@/components/CategoryCarousel';
 import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
 
@@ -131,6 +132,22 @@ const Index = () => {
               </Card>
             ))}
           </div>
+        </section>
+
+        {/* Category Carousels */}
+        <section className="space-y-8">
+          <h3 className="text-xl font-semibold text-gray-800">Produtos por Categoria</h3>
+          {categories?.map((category) => (
+            <CategoryCarousel
+              key={category.id}
+              categoryId={category.id}
+              categoryName={category.name}
+              categoryIcon={category.icon}
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+              onProductClick={setSelectedProduct}
+            />
+          ))}
         </section>
 
         {/* Featured Products */}
