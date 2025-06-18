@@ -22,6 +22,15 @@ const CategoryManager = () => {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!newCategory.name.trim() || !newCategory.icon.trim()) {
+      toast({
+        title: "Erro de validação",
+        description: "Nome e ícone são obrigatórios.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       await createCategory.mutateAsync(newCategory);
       setNewCategory({ name: '', icon: '' });
@@ -30,6 +39,7 @@ const CategoryManager = () => {
         description: "A categoria foi adicionada com sucesso.",
       });
     } catch (error) {
+      console.error('Erro ao criar categoria:', error);
       toast({
         title: "Erro ao criar categoria",
         description: "Ocorreu um erro ao criar a categoria.",
@@ -40,21 +50,41 @@ const CategoryManager = () => {
 
   const startEdit = (category: any) => {
     setEditingId(category.id);
-    setEditData({ name: category.name, icon: category.icon });
+    setEditData({ name: category.name || '', icon: category.icon || '' });
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditData({ name: '', icon: '' });
   };
 
   const handleUpdate = async (id: string) => {
+    if (!editData.name.trim() || !editData.icon.trim()) {
+      toast({
+        title: "Erro de validação",
+        description: "Nome e ícone são obrigatórios.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      await updateCategory.mutateAsync({ id, ...editData });
+      await updateCategory.mutateAsync({ 
+        id, 
+        name: editData.name.trim(), 
+        icon: editData.icon.trim() 
+      });
       setEditingId(null);
+      setEditData({ name: '', icon: '' });
       toast({
         title: "Categoria atualizada!",
         description: "A categoria foi atualizada com sucesso.",
       });
     } catch (error) {
+      console.error('Erro ao atualizar categoria:', error);
       toast({
         title: "Erro ao atualizar categoria",
-        description: "Ocorreu um erro ao atualizar a categoria.",
+        description: "Ocorreu um erro ao atualizar a categoria. Tente novamente.",
         variant: "destructive",
       });
     }
@@ -69,6 +99,7 @@ const CategoryManager = () => {
           description: "A categoria foi excluída com sucesso.",
         });
       } catch (error) {
+        console.error('Erro ao excluir categoria:', error);
         toast({
           title: "Erro ao excluir categoria",
           description: "Ocorreu um erro ao excluir a categoria.",
@@ -79,7 +110,7 @@ const CategoryManager = () => {
   };
 
   if (isLoading) {
-    return <div>Carregando categorias...</div>;
+    return <div className="flex justify-center p-8">Carregando categorias...</div>;
   }
 
   return (
@@ -130,67 +161,77 @@ const CategoryManager = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {categories?.map((category) => (
-              <div key={category.id} className="flex items-center justify-between p-4 border rounded-lg">
-                {editingId === category.id ? (
-                  <div className="flex items-center gap-4 flex-1">
-                    <Input
-                      value={editData.name}
-                      onChange={(e) => setEditData(prev => ({ ...prev, name: e.target.value }))}
-                      className="flex-1"
-                    />
-                    <Input
-                      value={editData.icon}
-                      onChange={(e) => setEditData(prev => ({ ...prev, icon: e.target.value }))}
-                      className="w-20"
-                    />
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        onClick={() => handleUpdate(category.id)}
-                        disabled={updateCategory.isPending}
-                      >
-                        <Save className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => setEditingId(null)}
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
+            {categories && categories.length > 0 ? (
+              categories.map((category) => (
+                <div key={category.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  {editingId === category.id ? (
+                    <div className="flex items-center gap-4 flex-1">
+                      <Input
+                        value={editData.name}
+                        onChange={(e) => setEditData(prev => ({ ...prev, name: e.target.value }))}
+                        placeholder="Nome da categoria"
+                        className="flex-1"
+                      />
+                      <Input
+                        value={editData.icon}
+                        onChange={(e) => setEditData(prev => ({ ...prev, icon: e.target.value }))}
+                        placeholder="🎂"
+                        className="w-20"
+                      />
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => handleUpdate(category.id)}
+                          disabled={updateCategory.isPending}
+                          className="bg-green-500 hover:bg-green-600 text-white"
+                        >
+                          <Save className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={cancelEdit}
+                          disabled={updateCategory.isPending}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="flex items-center gap-4">
-                      <Badge variant="outline" className="text-lg">
-                        {category.icon}
-                      </Badge>
-                      <span className="font-medium">{category.name}</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => startEdit(category)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-red-600 hover:bg-red-50"
-                        onClick={() => handleDelete(category.id)}
-                        disabled={deleteCategory.isPending}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-4">
+                        <Badge variant="outline" className="text-lg">
+                          {category.icon}
+                        </Badge>
+                        <span className="font-medium">{category.name}</span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => startEdit(category)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="text-red-600 hover:bg-red-50"
+                          onClick={() => handleDelete(category.id)}
+                          disabled={deleteCategory.isPending}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                Nenhuma categoria cadastrada ainda.
               </div>
-            ))}
+            )}
           </div>
         </CardContent>
       </Card>
