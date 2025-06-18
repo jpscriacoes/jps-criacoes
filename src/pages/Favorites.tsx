@@ -28,6 +28,7 @@ const Favorites = () => {
     occasion: product.occasion,
     theme: product.theme,
     imageUrl: product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+    images: [product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'],
     featured: product.featured,
     createdAt: product.created_at
   })) || [];
