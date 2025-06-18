@@ -5,18 +5,32 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import ProductDetailModal from '@/components/ProductDetailModal';
-import { mockProducts, Product } from '@/data/mockData';
+import { useProducts } from '@/hooks/useProducts';
 
 const Favorites = () => {
   const navigate = useNavigate();
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [favorites, setFavorites] = useState<string[]>(
     JSON.parse(localStorage.getItem('cake-toppers-favorites') || '[]')
   );
 
-  const favoriteProducts = mockProducts.filter(product => 
+  const { data: products, isLoading } = useProducts();
+
+  // Transform and filter favorite products
+  const favoriteProducts = products?.filter(product => 
     favorites.includes(product.id)
-  );
+  ).map(product => ({
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    category: product.categories?.name || '',
+    material: product.material,
+    occasion: product.occasion,
+    theme: product.theme,
+    imageUrl: product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+    featured: product.featured,
+    createdAt: product.created_at
+  })) || [];
 
   const toggleFavorite = (productId: string) => {
     const newFavorites = favorites.filter(id => id !== productId);
@@ -28,6 +42,17 @@ const Favorites = () => {
     setFavorites([]);
     localStorage.setItem('cake-toppers-favorites', JSON.stringify([]));
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">💖</div>
+          <h3 className="text-xl font-semibold text-gray-700">Carregando favoritos...</h3>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">

@@ -4,22 +4,39 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import ProductDetailModal from '@/components/ProductDetailModal';
-import { mockProducts, Product, categories } from '@/data/mockData';
+import { useProducts } from '@/hooks/useProducts';
+import { useCategories } from '@/hooks/useCategories';
 
 const Index = () => {
   const navigate = useNavigate();
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [favorites, setFavorites] = useState<string[]>(
     JSON.parse(localStorage.getItem('cake-toppers-favorites') || '[]')
   );
 
-  const featuredProducts = mockProducts.filter(product => product.featured);
-  const recentProducts = mockProducts
+  const { data: products, isLoading: productsLoading } = useProducts();
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
+
+  // Transform database products to match existing component structure
+  const transformedProducts = products?.map(product => ({
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    category: product.categories?.name || '',
+    material: product.material,
+    occasion: product.occasion,
+    theme: product.theme,
+    imageUrl: product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+    featured: product.featured,
+    createdAt: product.created_at
+  })) || [];
+
+  const featuredProducts = transformedProducts.filter(product => product.featured);
+  const recentProducts = transformedProducts
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 6);
 
@@ -36,13 +53,24 @@ const Index = () => {
     navigate(`/catalog?search=${encodeURIComponent(searchTerm)}`);
   };
 
-  const handleCategoryClick = (categoryId: string) => {
-    navigate(`/catalog?category=${categoryId}`);
+  const handleCategoryClick = (categoryName: string) => {
+    navigate(`/catalog?category=${categoryName}`);
   };
 
   const handleFavoritesClick = () => {
     navigate('/favorites');
   };
+
+  if (productsLoading || categoriesLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">✨</div>
+          <h3 className="text-xl font-semibold text-gray-700">Carregando...</h3>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
@@ -89,11 +117,11 @@ const Index = () => {
         <section>
           <h3 className="text-xl font-semibold text-gray-800 mb-4">Explore por Categoria</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {categories.filter(cat => cat.id !== 'all').map((category) => (
+            {categories?.map((category) => (
               <Card
                 key={category.id}
                 className="gradient-card hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105"
-                onClick={() => handleCategoryClick(category.id)}
+                onClick={() => handleCategoryClick(category.name)}
               >
                 <CardContent className="p-6 text-center">
                   <div className="text-3xl mb-3">{category.icon}</div>
