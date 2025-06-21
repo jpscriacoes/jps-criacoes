@@ -14,16 +14,16 @@ const Header = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:bg-slate-900/95 dark:border-slate-700/50">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-3">
             <img 
               src="/lovable-uploads/b6c7b51c-0e55-462b-b021-0fdba9d0bd55.png" 
               alt="JPS CRIAÇÕES Logo" 
-              className="h-10 w-10 rounded-full object-cover border-2 border-pink-200 shadow-sm"
+              className="h-10 w-10 rounded-full object-cover border-2 border-pink-200 shadow-sm dark:border-pink-400/50 dark:shadow-pink-500/20"
             />
-            <span className="hidden font-bold text-lg sm:inline-block bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="hidden font-bold text-lg sm:inline-block bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent dark:from-pink-400 dark:to-purple-400">
               JPS CRIAÇÕES
             </span>
           </Link>
@@ -31,7 +31,7 @@ const Header = () => {
             <Link
               to="/"
               className={`transition-colors hover:text-foreground/80 ${
-                isActive('/') ? 'text-foreground' : 'text-foreground/60'
+                isActive('/') ? 'text-foreground dark:text-slate-100' : 'text-foreground/60 dark:text-slate-300'
               }`}
             >
               Início
@@ -39,7 +39,7 @@ const Header = () => {
             <Link
               to="/catalog"
               className={`transition-colors hover:text-foreground/80 ${
-                isActive('/catalog') ? 'text-foreground' : 'text-foreground/60'
+                isActive('/catalog') ? 'text-foreground dark:text-slate-100' : 'text-foreground/60 dark:text-slate-300'
               }`}
             >
               Catálogo
@@ -47,7 +47,7 @@ const Header = () => {
             <Link
               to="/favorites"
               className={`transition-colors hover:text-foreground/80 ${
-                isActive('/favorites') ? 'text-foreground' : 'text-foreground/60'
+                isActive('/favorites') ? 'text-foreground dark:text-slate-100' : 'text-foreground/60 dark:text-slate-300'
               }`}
             >
               Favoritos
@@ -55,7 +55,7 @@ const Header = () => {
             <Link
               to="/admin"
               className={`transition-colors hover:text-foreground/80 ${
-                isActive('/admin') ? 'text-foreground' : 'text-foreground/60'
+                isActive('/admin') ? 'text-foreground dark:text-slate-100' : 'text-foreground/60 dark:text-slate-300'
               }`}
             >
               Admin
@@ -64,7 +64,7 @@ const Header = () => {
         </div>
         <Button
           variant="ghost"
-          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden dark:text-slate-200"
           onClick={toggleMenu}
         >
           <Menu className="h-6 w-6" />
@@ -77,9 +77,9 @@ const Header = () => {
               <img 
                 src="/lovable-uploads/b6c7b51c-0e55-462b-b021-0fdba9d0bd55.png" 
                 alt="JPS CRIAÇÕES Logo" 
-                className="h-8 w-8 rounded-full object-cover border border-pink-200"
+                className="h-8 w-8 rounded-full object-cover border border-pink-200 dark:border-pink-400/50"
               />
-              <span className="font-bold text-sm bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="font-bold text-sm bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent dark:from-pink-400 dark:to-purple-400">
                 JPS CRIAÇÕES
               </span>
             </Link>
@@ -90,21 +90,21 @@ const Header = () => {
         </div>
       </div>
       {isMenuOpen && (
-        <div className="fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] w-full grid-flow-row auto-rows-max overflow-auto p-6 pb-16 shadow-md animate-in slide-in-from-bottom-80 md:hidden">
-          <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
-            <Link to="/" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline">
+        <div className="fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] w-full grid-flow-row auto-rows-max overflow-auto p-6 pb-16 shadow-md animate-in slide-in-from-bottom-80 md:hidden dark:bg-slate-900/95">
+          <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md dark:bg-slate-800 dark:border dark:border-slate-600/50">
+            <Link to="/" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline dark:text-slate-200 dark:hover:bg-slate-700/50">
               <Cake className="mr-2 h-4 w-4" />
               Início
             </Link>
-            <Link to="/catalog" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline">
+            <Link to="/catalog" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline dark:text-slate-200 dark:hover:bg-slate-700/50">
               <BookOpen className="mr-2 h-4 w-4" />
               Catálogo
             </Link>
-            <Link to="/favorites" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline">
+            <Link to="/favorites" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline dark:text-slate-200 dark:hover:bg-slate-700/50">
               <Heart className="mr-2 h-4 w-4" />
               Favoritos
             </Link>
-            <Link to="/admin" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline">
+            <Link to="/admin" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline dark:text-slate-200 dark:hover:bg-slate-700/50">
               <Settings className="mr-2 h-4 w-4" />
               Admin
             </Link>
