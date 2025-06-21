@@ -1,107 +1,100 @@
 
-import { Bookmark, Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, Heart, Cake, BookOpen, Settings } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
-interface HeaderProps {
-  title: string;
-  showFavorites?: boolean;
-  onFavoritesClick?: () => void;
-  favoriteCount?: number;
-}
-
-const Header = ({ title, showFavorites = false, onFavoritesClick, favoriteCount = 0 }: HeaderProps) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
-  const navigationItems = [
-    { name: 'Início', path: '/' },
-    { name: 'Catálogo', path: '/catalog' },
-    { name: 'Favoritos', path: '/favorites' },
-    { name: 'Admin', path: '/admin' }
-  ];
+  const isActive = (path: string) => location.pathname === path;
 
-  const isActivePath = (path: string) => {
-    return location.pathname === path;
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="sticky top-0 z-50 glass-effect border-b border-pink-100/30 px-4 py-3">
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-            {title}
-          </h1>
-          <p className="text-xs text-muted-foreground">Personalizando Sonhos</p>
-        </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
-          {navigationItems.map((item) => (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center">
+        <div className="mr-4 hidden md:flex">
+          <Link to="/" className="mr-6 flex items-center space-x-2">
+            <Cake className="h-6 w-6 text-primary" />
+            <span className="hidden font-bold sm:inline-block">
+              Doce Arte
+            </span>
+          </Link>
+          <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link
-              key={item.name}
-              to={item.path}
-              className={`text-sm font-medium transition-colors hover:text-pink-600 ${
-                isActivePath(item.path) 
-                  ? 'text-pink-600 border-b-2 border-pink-600 pb-1' 
-                  : 'text-gray-600'
+              to="/"
+              className={`transition-colors hover:text-foreground/80 ${
+                isActive('/') ? 'text-foreground' : 'text-foreground/60'
               }`}
             >
-              {item.name}
+              Início
             </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center space-x-3">
-          {showFavorites && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onFavoritesClick}
-              className="relative bg-white/50 border-pink-200 hover:bg-pink-50 transition-all duration-200"
+            <Link
+              to="/catalog"
+              className={`transition-colors hover:text-foreground/80 ${
+                isActive('/catalog') ? 'text-foreground' : 'text-foreground/60'
+              }`}
             >
-              <Bookmark className="w-4 h-4 mr-2" />
+              Catálogo
+            </Link>
+            <Link
+              to="/favorites"
+              className={`transition-colors hover:text-foreground/80 ${
+                isActive('/favorites') ? 'text-foreground' : 'text-foreground/60'
+              }`}
+            >
               Favoritos
-              {favoriteCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {favoriteCount}
-                </span>
-              )}
-            </Button>
-          )}
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="outline"
-            size="sm"
-            className="md:hidden bg-white/50 border-pink-200"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </Button>
+            </Link>
+            <Link
+              to="/admin"
+              className={`transition-colors hover:text-foreground/80 ${
+                isActive('/admin') ? 'text-foreground' : 'text-foreground/60'
+              }`}
+            >
+              Admin
+            </Link>
+          </nav>
+        </div>
+        <Button
+          variant="ghost"
+          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+          onClick={toggleMenu}
+        >
+          <Menu className="h-6 w-6" />
+          <span className="sr-only">Toggle Menu</span>
+        </Button>
+        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+          <div className="w-full flex-1 md:w-auto md:flex-none">
+            {/* Espaço para futura barra de pesquisa */}
+          </div>
+          <nav className="flex items-center space-x-2">
+            <ThemeToggle />
+          </nav>
         </div>
       </div>
-
-      {/* Mobile Navigation */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden mt-4 pb-4 border-t border-pink-100/30">
-          <nav className="flex flex-col space-y-2 mt-4">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={`block px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                  isActivePath(item.path)
-                    ? 'bg-pink-100 text-pink-700'
-                    : 'text-gray-600 hover:bg-pink-50 hover:text-pink-600'
-                }`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
+      {isMenuOpen && (
+        <div className="fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] w-full grid-flow-row auto-rows-max overflow-auto p-6 pb-16 shadow-md animate-in slide-in-from-bottom-80 md:hidden">
+          <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
+            <Link to="/" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline">
+              <Cake className="mr-2 h-4 w-4" />
+              Início
+            </Link>
+            <Link to="/catalog" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline">
+              <BookOpen className="mr-2 h-4 w-4" />
+              Catálogo
+            </Link>
+            <Link to="/favorites" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline">
+              <Heart className="mr-2 h-4 w-4" />
+              Favoritos
+            </Link>
+            <Link to="/admin" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline">
+              <Settings className="mr-2 h-4 w-4" />
+              Admin
+            </Link>
+          </div>
         </div>
       )}
     </header>
