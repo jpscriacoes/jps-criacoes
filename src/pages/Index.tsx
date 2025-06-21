@@ -65,34 +65,29 @@ const Index = () => {
 
   if (productsLoading || categoriesLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">✨</div>
-          <h3 className="text-xl font-semibold text-gray-700">Carregando...</h3>
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Carregando...</h3>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <Header 
-        title="JPS CRIAÇÕES"
-        showFavorites 
-        onFavoritesClick={handleFavoritesClick}
-        favoriteCount={favorites.length}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
         {/* Hero Section */}
         <section className="text-center py-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
             Transforme sua festa em um
             <span className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent block">
               momento mágico ✨
             </span>
           </h2>
-          <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
             Descubra nossa coleção exclusiva de topos de bolo e decorações artesanais 
             personalizadas para tornar sua celebração única e especial.
           </p>
@@ -103,7 +98,7 @@ const Index = () => {
               placeholder="Buscar por tema, ocasião..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-white/70 border-pink-200 focus:border-pink-400"
+              className="bg-white/70 border-pink-200 focus:border-pink-400 dark:bg-gray-800/70 dark:border-pink-800"
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             />
             <Button 
@@ -117,7 +112,7 @@ const Index = () => {
 
         {/* Categories Section */}
         <section>
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Explore por Categoria</h3>
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Explore por Categoria</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categories?.map((category) => (
               <Card
@@ -127,7 +122,7 @@ const Index = () => {
               >
                 <CardContent className="p-6 text-center">
                   <div className="text-3xl mb-3">{category.icon}</div>
-                  <h4 className="font-semibold text-gray-800">{category.name}</h4>
+                  <h4 className="font-semibold text-gray-800 dark:text-gray-200">{category.name}</h4>
                 </CardContent>
               </Card>
             ))}
@@ -136,7 +131,7 @@ const Index = () => {
 
         {/* Category Carousels */}
         <section className="space-y-8">
-          <h3 className="text-xl font-semibold text-gray-800">Produtos por Categoria</h3>
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Produtos por Categoria</h3>
           {categories?.map((category) => (
             <CategoryCarousel
               key={category.id}
@@ -154,11 +149,11 @@ const Index = () => {
         {featuredProducts.length > 0 && (
           <section>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold text-gray-800">✨ Produtos em Destaque</h3>
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">✨ Produtos em Destaque</h3>
               <Button
                 variant="outline"
                 onClick={() => navigate('/catalog')}
-                className="border-pink-200 text-pink-600 hover:bg-pink-50"
+                className="border-pink-200 text-pink-600 hover:bg-pink-50 dark:border-pink-800 dark:text-pink-400 dark:hover:bg-pink-950"
               >
                 Ver Todos
               </Button>
@@ -180,11 +175,11 @@ const Index = () => {
         {/* Recent Products */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-semibold text-gray-800">🆕 Novidades</h3>
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">🆕 Novidades</h3>
             <Button
               variant="outline"
               onClick={() => navigate('/catalog')}
-              className="border-purple-200 text-purple-600 hover:bg-purple-50"
+              className="border-purple-200 text-purple-600 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-400 dark:hover:bg-purple-950"
             >
               Ver Catálogo Completo
             </Button>
@@ -203,11 +198,11 @@ const Index = () => {
         </section>
 
         {/* Call to Action */}
-        <section className="text-center py-12 bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">
+        <section className="text-center py-12 bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 rounded-2xl">
+          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
             Encontrou algo que amou? 💝
           </h3>
-          <p className="text-gray-600 mb-6 max-w-md mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
             Salve seus produtos favoritos e tenha acesso rápido às suas inspirações preferidas.
           </p>
           <Button

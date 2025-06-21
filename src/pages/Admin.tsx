@@ -75,13 +75,8 @@ const Admin = () => {
 
   if (showProductForm) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-        <Header 
-          title="Painel Administrativo"
-          showFavorites 
-          onFavoritesClick={handleFavoritesClick}
-          favoriteCount={favorites.length}
-        />
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <Header />
         <main className="max-w-7xl mx-auto px-4 py-6">
           <ProductForm
             product={editingProduct}
@@ -94,13 +89,8 @@ const Admin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <Header 
-        title="Painel Administrativo"
-        showFavorites 
-        onFavoritesClick={handleFavoritesClick}
-        favoriteCount={favorites.length}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -113,8 +103,8 @@ const Admin = () => {
 
           <TabsContent value="overview" className="space-y-6">
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Dashboard</h2>
-              <p className="text-gray-600">Gerencie seus produtos e acompanhe o desempenho da loja</p>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Dashboard</h2>
+              <p className="text-gray-600 dark:text-gray-400">Gerencie seus produtos e acompanhe o desempenho da loja</p>
             </div>
 
             {/* Stats Cards */}
@@ -124,8 +114,8 @@ const Admin = () => {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                        <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{stat.title}</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stat.value}</p>
                       </div>
                       <div className={`p-3 rounded-full ${stat.bgColor}`}>
                         <stat.icon className={`w-6 h-6 ${stat.color}`} />
@@ -155,7 +145,7 @@ const Admin = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="border-pink-200 text-pink-600 hover:bg-pink-50"
+                    className="border-pink-200 text-pink-600 hover:bg-pink-50 dark:border-pink-800 dark:text-pink-400 dark:hover:bg-pink-950"
                     onClick={() => setActiveTab('categories')}
                   >
                     <Edit className="w-4 h-4 mr-2" />
@@ -163,7 +153,7 @@ const Admin = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="border-purple-200 text-purple-600 hover:bg-purple-50"
+                    className="border-purple-200 text-purple-600 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-400 dark:hover:bg-purple-950"
                     onClick={() => setActiveTab('reports')}
                   >
                     <BarChart3 className="w-4 h-4 mr-2" />
@@ -193,10 +183,10 @@ const Admin = () => {
               <CardContent>
                 <div className="space-y-4">
                   {recentProducts.map((product) => (
-                    <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                    <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900">{product.name}</h4>
-                        <p className="text-sm text-gray-600">
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">{product.name}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                           {product.categories?.name} • {new Date(product.created_at).toLocaleDateString('pt-BR')}
                         </p>
                       </div>
@@ -218,7 +208,7 @@ const Admin = () => {
                   ))}
                   
                   {recentProducts.length === 0 && (
-                    <div className="text-center py-8 text-gray-500">
+                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                       Nenhum produto cadastrado ainda.
                     </div>
                   )}
@@ -229,7 +219,7 @@ const Admin = () => {
 
           <TabsContent value="products" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-800">Gerenciar Produtos</h2>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Gerenciar Produtos</h2>
               <Button 
                 className="bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600"
                 onClick={() => setShowProductForm(true)}
@@ -242,20 +232,20 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="categories" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-800">Gerenciar Categorias</h2>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Gerenciar Categorias</h2>
             <CategoryManager />
           </TabsContent>
 
           <TabsContent value="reports" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-800">Relatórios</h2>
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Relatórios</h2>
             <Card>
               <CardContent className="p-6">
                 <div className="text-center py-12">
                   <BarChart3 className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                  <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Relatórios em Desenvolvimento
                   </h3>
-                  <p className="text-gray-500">
+                  <p className="text-gray-500 dark:text-gray-400">
                     Esta funcionalidade estará disponível em breve.
                   </p>
                 </div>

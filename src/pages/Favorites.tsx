@@ -46,27 +46,27 @@ const Favorites = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">💖</div>
-          <h3 className="text-xl font-semibold text-gray-700">Carregando favoritos...</h3>
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Carregando favoritos...</h3>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <Header title="Meus Favoritos" />
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-6">
         {favoriteProducts.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">💖</div>
-            <h3 className="text-xl font-semibold text-gray-700 mb-4">
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
               Nenhum favorito ainda
             </h3>
-            <p className="text-gray-500 mb-6">
+            <p className="text-gray-500 dark:text-gray-400 mb-6">
               Explore nosso catálogo e adicione produtos aos seus favoritos!
             </p>
             <Button
@@ -79,14 +79,14 @@ const Favorites = () => {
         ) : (
           <>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-800">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                 {favoriteProducts.length} produto{favoriteProducts.length !== 1 ? 's' : ''} favorito{favoriteProducts.length !== 1 ? 's' : ''}
               </h2>
               
               <Button
                 variant="outline"
                 onClick={clearAllFavorites}
-                className="border-pink-200 text-pink-600 hover:bg-pink-50"
+                className="border-pink-200 text-pink-600 hover:bg-pink-50 dark:border-pink-800 dark:text-pink-400 dark:hover:bg-pink-950"
               >
                 Limpar Todos
               </Button>
