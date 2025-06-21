@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Heart, Cake, BookOpen, Settings } from 'lucide-react';
@@ -16,9 +17,13 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
-          <Link to="/" className="mr-6 flex items-center space-x-2">
-            <Cake className="h-6 w-6 text-primary" />
-            <span className="hidden font-bold sm:inline-block">
+          <Link to="/" className="mr-6 flex items-center space-x-3">
+            <img 
+              src="/lovable-uploads/b6c7b51c-0e55-462b-b021-0fdba9d0bd55.png" 
+              alt="JPS CRIAÇÕES Logo" 
+              className="h-10 w-10 rounded-full object-cover border-2 border-pink-200 shadow-sm"
+            />
+            <span className="hidden font-bold text-lg sm:inline-block bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
               JPS CRIAÇÕES
             </span>
           </Link>
@@ -67,7 +72,17 @@ const Header = () => {
         </Button>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            {/* Espaço para futura barra de pesquisa */}
+            {/* Mobile logo for smaller screens */}
+            <Link to="/" className="flex items-center space-x-2 md:hidden">
+              <img 
+                src="/lovable-uploads/b6c7b51c-0e55-462b-b021-0fdba9d0bd55.png" 
+                alt="JPS CRIAÇÕES Logo" 
+                className="h-8 w-8 rounded-full object-cover border border-pink-200"
+              />
+              <span className="font-bold text-sm bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                JPS CRIAÇÕES
+              </span>
+            </Link>
           </div>
           <nav className="flex items-center space-x-2">
             <ThemeToggle />
