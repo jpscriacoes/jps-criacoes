@@ -55,8 +55,8 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
       className="group gradient-card hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] overflow-hidden h-full flex flex-col"
       onClick={() => onClick(product)}
     >
-      {/* Container da Imagem com aspect ratio fixo */}
-      <div className="relative w-full aspect-square overflow-hidden bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600">
+      {/* Container da Imagem com aspect ratio ajustado */}
+      <div className="relative w-full aspect-[4/3] sm:aspect-[3/3] md:aspect-[4/3] lg:aspect-[3/4] overflow-hidden bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600">
         {!imageLoaded && !imageError && (
           <div className="absolute inset-0 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 animate-pulse flex items-center justify-center">
             <div className="text-gray-400 text-xs">Carregando...</div>
@@ -74,7 +74,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
           <img
             src={product.imageUrl}
             alt={product.name}
-            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
+            className={`w-full h-full object-cover transition-opacity duration-300 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             onLoad={() => setImageLoaded(true)}
@@ -123,22 +123,22 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
         )}
       </div>
       
-      {/* Conteúdo do Card - Responsivo */}
-      <CardContent className="p-3 sm:p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-sm sm:text-base mb-2 line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] leading-tight">
+      {/* Conteúdo do Card - Compacto */}
+      <CardContent className="p-2 sm:p-3 md:p-4 flex-1 flex flex-col">
+        <h3 className="font-semibold text-xs sm:text-sm md:text-base mb-1 sm:mb-2 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] leading-tight">
           {product.name}
         </h3>
         
-        <div className="flex flex-wrap gap-1 mb-3">
-          <Badge variant="outline" className="text-xs border-pink-200 text-pink-700 dark:border-pink-800 dark:text-pink-300 px-2 py-1">
+        <div className="flex flex-wrap gap-1 mb-2">
+          <Badge variant="outline" className="text-[10px] sm:text-xs border-pink-200 text-pink-700 dark:border-pink-800 dark:text-pink-300 px-1.5 py-0.5">
             {product.material}
           </Badge>
-          <Badge variant="outline" className="text-xs border-purple-200 text-purple-700 dark:border-purple-800 dark:text-purple-300 px-2 py-1">
+          <Badge variant="outline" className="text-[10px] sm:text-xs border-purple-200 text-purple-700 dark:border-purple-800 dark:text-purple-300 px-1.5 py-0.5">
             {product.theme}
           </Badge>
         </div>
         
-        <p className="text-xs sm:text-sm text-muted-foreground mt-auto leading-relaxed">
+        <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground mt-auto leading-relaxed line-clamp-2">
           {product.occasion}
         </p>
       </CardContent>

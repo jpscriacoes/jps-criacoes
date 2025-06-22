@@ -46,16 +46,16 @@ const CategoryCarousel = ({
     return null;
   }
 
-  // Responsivo: diferentes quantidades de itens por tela
+  // Responsivo: mais itens por tela no desktop para cards menores
   const getItemsPerView = () => {
     if (typeof window !== 'undefined') {
-      if (window.innerWidth < 640) return 1; // mobile
-      if (window.innerWidth < 768) return 2; // tablet small
-      if (window.innerWidth < 1024) return 3; // tablet
-      if (window.innerWidth < 1280) return 4; // desktop small
-      return 5; // desktop large
+      if (window.innerWidth < 640) return 2; // mobile: 2 cards
+      if (window.innerWidth < 768) return 3; // tablet small: 3 cards  
+      if (window.innerWidth < 1024) return 4; // tablet: 4 cards
+      if (window.innerWidth < 1280) return 5; // desktop small: 5 cards
+      return 6; // desktop large: 6 cards (mais compacto)
     }
-    return 4;
+    return 5;
   };
 
   const [itemsPerView, setItemsPerView] = useState(getItemsPerView());
@@ -92,8 +92,8 @@ const CategoryCarousel = ({
         </CardTitle>
       </CardHeader>
       
-      <CardContent className="relative px-6 pb-6">
-        <div className="flex items-center gap-4">
+      <CardContent className="relative px-4 sm:px-6 pb-6">
+        <div className="flex items-center gap-2 sm:gap-4">
           {/* Botão Anterior */}
           {categoryProducts.length > itemsPerView && (
             <Button
@@ -101,16 +101,16 @@ const CategoryCarousel = ({
               size="icon"
               onClick={prevSlide}
               disabled={currentIndex === 0}
-              className="flex-shrink-0 h-10 w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 shadow-md"
+              className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 shadow-md"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
           )}
 
-          {/* Container do Carrossel */}
+          {/* Container do Carrossel - Compacto */}
           <div className="overflow-hidden flex-1">
             <div 
-              className="flex gap-4 transition-transform duration-300 ease-in-out"
+              className="flex gap-2 sm:gap-3 transition-transform duration-300 ease-in-out"
               style={{ 
                 transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
                 width: `${Math.ceil(categoryProducts.length / itemsPerView) * 100}%`
@@ -125,7 +125,7 @@ const CategoryCarousel = ({
                     minWidth: `${100 / itemsPerView}%`
                   }}
                 >
-                  <div className="px-2">
+                  <div className="px-1">
                     <ProductCard
                       product={product}
                       isFavorite={favorites.includes(product.id)}
@@ -145,22 +145,22 @@ const CategoryCarousel = ({
               size="icon"
               onClick={nextSlide}
               disabled={currentIndex >= maxIndex}
-              className="flex-shrink-0 h-10 w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 shadow-md"
+              className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 shadow-md"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
           )}
         </div>
 
-        {/* Indicadores */}
+        {/* Indicadores - Compactos */}
         {categoryProducts.length > itemsPerView && maxIndex > 0 && (
-          <div className="flex justify-center mt-6 gap-2">
+          <div className="flex justify-center mt-4 gap-1.5">
             {Array.from({ length: maxIndex + 1 }, (_, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-200 ${
                   index === currentIndex 
-                    ? 'bg-pink-500 w-6' 
+                    ? 'bg-pink-500 w-4 sm:w-6' 
                     : 'bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500'
                 }`}
                 onClick={() => setCurrentIndex(index)}
