@@ -16,6 +16,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: ProductCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,35 +45,56 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
     });
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoaded(true);
+  };
+
   return (
     <Card 
-      className="group gradient-card hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-[1.02] overflow-hidden"
+      className="group gradient-card hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] overflow-hidden h-full flex flex-col"
       onClick={() => onClick(product)}
     >
-      <div className="relative aspect-square overflow-hidden">
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-br from-pink-100 to-purple-100 animate-pulse" />
+      {/* Container da Imagem com aspect ratio fixo */}
+      <div className="relative w-full aspect-square overflow-hidden bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600">
+        {!imageLoaded && !imageError && (
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 animate-pulse flex items-center justify-center">
+            <div className="text-gray-400 text-xs">Carregando...</div>
+          </div>
         )}
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-110 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
-          onLoad={() => setImageLoaded(true)}
-        />
         
-        <div className="absolute top-3 left-3">
-          <Badge className="bg-white/90 text-gray-700 border-0">
+        {imageError ? (
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center">
+            <div className="text-center text-gray-500 dark:text-gray-400 p-4">
+              <div className="text-2xl mb-2">🖼️</div>
+              <div className="text-xs">Imagem não disponível</div>
+            </div>
+          </div>
+        ) : (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-110 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            onError={handleImageError}
+          />
+        )}
+        
+        {/* Badge da Categoria */}
+        <div className="absolute top-2 left-2">
+          <Badge className="bg-white/95 text-gray-700 border-0 text-xs px-2 py-1 shadow-sm">
             {product.category}
           </Badge>
         </div>
         
-        <div className="absolute top-3 right-3 flex gap-2">
+        {/* Botões de Ação */}
+        <div className="absolute top-2 right-2 flex gap-1">
           <Button
             size="sm"
             variant="secondary"
-            className="w-8 h-8 p-0 bg-white/90 hover:bg-white border-0 shadow-md"
+            className="w-7 h-7 p-0 bg-white/95 hover:bg-white border-0 shadow-sm"
             onClick={handleShare}
           >
             <Share className="w-3 h-3" />
@@ -80,10 +102,10 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
           <Button
             size="sm"
             variant="secondary"
-            className={`w-8 h-8 p-0 border-0 shadow-md transition-colors ${
+            className={`w-7 h-7 p-0 border-0 shadow-sm transition-colors ${
               isFavorite 
                 ? 'bg-pink-500 text-white hover:bg-pink-600' 
-                : 'bg-white/90 hover:bg-white text-gray-600'
+                : 'bg-white/95 hover:bg-white text-gray-600'
             }`}
             onClick={handleFavorite}
           >
@@ -91,30 +113,32 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
           </Button>
         </div>
         
+        {/* Badge de Destaque */}
         {product.featured && (
-          <div className="absolute bottom-3 left-3">
-            <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white border-0">
+          <div className="absolute bottom-2 left-2">
+            <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white border-0 text-xs px-2 py-1">
               ✨ Destaque
             </Badge>
           </div>
         )}
       </div>
       
-      <CardContent className="p-4">
-        <h3 className="font-semibold text-sm mb-2 line-clamp-2 min-h-[2.5rem]">
+      {/* Conteúdo do Card */}
+      <CardContent className="p-3 sm:p-4 flex-1 flex flex-col">
+        <h3 className="font-semibold text-sm mb-2 line-clamp-2 min-h-[2.5rem] leading-tight">
           {product.name}
         </h3>
         
-        <div className="flex flex-wrap gap-1 mb-3">
-          <Badge variant="outline" className="text-xs border-pink-200 text-pink-700">
+        <div className="flex flex-wrap gap-1 mb-2">
+          <Badge variant="outline" className="text-xs border-pink-200 text-pink-700 dark:border-pink-800 dark:text-pink-300">
             {product.material}
           </Badge>
-          <Badge variant="outline" className="text-xs border-purple-200 text-purple-700">
+          <Badge variant="outline" className="text-xs border-purple-200 text-purple-700 dark:border-purple-800 dark:text-purple-300">
             {product.theme}
           </Badge>
         </div>
         
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground mt-auto">
           {product.occasion}
         </p>
       </CardContent>
