@@ -74,7 +74,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
           <img
             src={product.imageUrl}
             alt={product.name}
-            className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-110 ${
+            className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             onLoad={() => setImageLoaded(true)}
@@ -84,61 +84,61 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
         
         {/* Badge da Categoria */}
         <div className="absolute top-2 left-2">
-          <Badge className="bg-white/95 text-gray-700 border-0 text-xs px-2 py-1 shadow-sm">
+          <Badge className="bg-white/95 text-gray-700 border-0 text-xs px-2 py-1 shadow-sm backdrop-blur-sm">
             {product.category}
           </Badge>
         </div>
         
         {/* Botões de Ação */}
-        <div className="absolute top-2 right-2 flex gap-1">
+        <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <Button
             size="sm"
             variant="secondary"
-            className="w-7 h-7 p-0 bg-white/95 hover:bg-white border-0 shadow-sm"
+            className="w-8 h-8 p-0 bg-white/95 hover:bg-white border-0 shadow-md backdrop-blur-sm"
             onClick={handleShare}
           >
-            <Share className="w-3 h-3" />
+            <Share className="w-3.5 h-3.5" />
           </Button>
           <Button
             size="sm"
             variant="secondary"
-            className={`w-7 h-7 p-0 border-0 shadow-sm transition-colors ${
+            className={`w-8 h-8 p-0 border-0 shadow-md backdrop-blur-sm transition-all duration-200 ${
               isFavorite 
                 ? 'bg-pink-500 text-white hover:bg-pink-600' 
                 : 'bg-white/95 hover:bg-white text-gray-600'
             }`}
             onClick={handleFavorite}
           >
-            <Bookmark className={`w-3 h-3 ${isFavorite ? 'fill-current' : ''}`} />
+            <Bookmark className={`w-3.5 h-3.5 ${isFavorite ? 'fill-current' : ''}`} />
           </Button>
         </div>
         
         {/* Badge de Destaque */}
         {product.featured && (
           <div className="absolute bottom-2 left-2">
-            <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white border-0 text-xs px-2 py-1">
+            <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white border-0 text-xs px-2 py-1 shadow-md">
               ✨ Destaque
             </Badge>
           </div>
         )}
       </div>
       
-      {/* Conteúdo do Card */}
+      {/* Conteúdo do Card - Responsivo */}
       <CardContent className="p-3 sm:p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-sm mb-2 line-clamp-2 min-h-[2.5rem] leading-tight">
+        <h3 className="font-semibold text-sm sm:text-base mb-2 line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] leading-tight">
           {product.name}
         </h3>
         
-        <div className="flex flex-wrap gap-1 mb-2">
-          <Badge variant="outline" className="text-xs border-pink-200 text-pink-700 dark:border-pink-800 dark:text-pink-300">
+        <div className="flex flex-wrap gap-1 mb-3">
+          <Badge variant="outline" className="text-xs border-pink-200 text-pink-700 dark:border-pink-800 dark:text-pink-300 px-2 py-1">
             {product.material}
           </Badge>
-          <Badge variant="outline" className="text-xs border-purple-200 text-purple-700 dark:border-purple-800 dark:text-purple-300">
+          <Badge variant="outline" className="text-xs border-purple-200 text-purple-700 dark:border-purple-800 dark:text-purple-300 px-2 py-1">
             {product.theme}
           </Badge>
         </div>
         
-        <p className="text-xs text-muted-foreground mt-auto">
+        <p className="text-xs sm:text-sm text-muted-foreground mt-auto leading-relaxed">
           {product.occasion}
         </p>
       </CardContent>

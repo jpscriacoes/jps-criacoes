@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -51,7 +52,8 @@ const CategoryCarousel = ({
       if (window.innerWidth < 640) return 1; // mobile
       if (window.innerWidth < 768) return 2; // tablet small
       if (window.innerWidth < 1024) return 3; // tablet
-      return 4; // desktop
+      if (window.innerWidth < 1280) return 4; // desktop small
+      return 5; // desktop large
     }
     return 4;
   };
@@ -90,25 +92,25 @@ const CategoryCarousel = ({
         </CardTitle>
       </CardHeader>
       
-      <CardContent className="relative px-4 pb-6">
-        <div className="flex items-center gap-2 sm:gap-4">
-          {/* Botão Anterior - escondido no mobile se não necessário */}
+      <CardContent className="relative px-6 pb-6">
+        <div className="flex items-center gap-4">
+          {/* Botão Anterior */}
           {categoryProducts.length > itemsPerView && (
             <Button
               variant="outline"
               size="icon"
               onClick={prevSlide}
               disabled={currentIndex === 0}
-              className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600"
+              className="flex-shrink-0 h-10 w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 shadow-md"
             >
-              <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+              <ChevronLeft className="w-4 h-4" />
             </Button>
           )}
 
           {/* Container do Carrossel */}
           <div className="overflow-hidden flex-1">
             <div 
-              className="flex gap-2 sm:gap-4 transition-transform duration-300 ease-in-out"
+              className="flex gap-4 transition-transform duration-300 ease-in-out"
               style={{ 
                 transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
                 width: `${Math.ceil(categoryProducts.length / itemsPerView) * 100}%`
@@ -123,7 +125,7 @@ const CategoryCarousel = ({
                     minWidth: `${100 / itemsPerView}%`
                   }}
                 >
-                  <div className="px-1">
+                  <div className="px-2">
                     <ProductCard
                       product={product}
                       isFavorite={favorites.includes(product.id)}
@@ -136,29 +138,29 @@ const CategoryCarousel = ({
             </div>
           </div>
 
-          {/* Botão Próximo - escondido no mobile se não necessário */}
+          {/* Botão Próximo */}
           {categoryProducts.length > itemsPerView && (
             <Button
               variant="outline"
               size="icon"
               onClick={nextSlide}
               disabled={currentIndex >= maxIndex}
-              className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600"
+              className="flex-shrink-0 h-10 w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 shadow-md"
             >
-              <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+              <ChevronRight className="w-4 h-4" />
             </Button>
           )}
         </div>
 
-        {/* Indicadores - apenas quando há múltiplas páginas */}
+        {/* Indicadores */}
         {categoryProducts.length > itemsPerView && maxIndex > 0 && (
-          <div className="flex justify-center mt-4 gap-1">
+          <div className="flex justify-center mt-6 gap-2">
             {Array.from({ length: maxIndex + 1 }, (_, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
+                className={`w-2 h-2 rounded-full transition-all duration-200 ${
                   index === currentIndex 
-                    ? 'bg-pink-500' 
+                    ? 'bg-pink-500 w-6' 
                     : 'bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500'
                 }`}
                 onClick={() => setCurrentIndex(index)}
