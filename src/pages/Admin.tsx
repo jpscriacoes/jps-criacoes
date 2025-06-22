@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,15 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
-import { Package, Users, BarChart3, Settings, Plus, Edit } from 'lucide-react';
+import { Package, Users, BarChart3, Settings, Plus, Edit, LogOut } from 'lucide-react';
 import { useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
+import { useAuth } from '@/hooks/useAuth';
 import ProductForm from '@/components/admin/ProductForm';
 import CategoryManager from '@/components/admin/CategoryManager';
 import ProductList from '@/components/admin/ProductList';
 
 const Admin = () => {
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
   const [favorites, setFavorites] = useState<string[]>(
     JSON.parse(localStorage.getItem('cake-toppers-favorites') || '[]')
   );
@@ -25,8 +26,9 @@ const Admin = () => {
   const { data: products } = useProducts();
   const { data: categories } = useCategories();
 
-  const handleFavoritesClick = () => {
-    navigate('/favorites');
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   const stats = [
@@ -93,6 +95,22 @@ const Admin = () => {
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-6">
+        {/* Admin Header com logout */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">Painel Administrativo</h1>
+            <p className="text-gray-600 dark:text-gray-400">Bem-vindo, {user?.email}</p>
+          </div>
+          <Button
+            variant="outline"
+            onClick={handleLogout}
+            className="border-red-200 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Sair
+          </Button>
+        </div>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
