@@ -40,8 +40,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { success: false, error: 'Credenciais inválidas' };
       }
 
-      // Verificar senha (simplificado - em produção usar bcrypt)
-      const isValidPassword = password === 'JpsCri@coes';
+      // Verificar senha (usando a senha correta que você mencionou)
+      const isValidPassword = password === 'Zrci872@';
       
       if (!isValidPassword) {
         return { success: false, error: 'Credenciais inválidas' };
