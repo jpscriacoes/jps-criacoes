@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -39,7 +38,7 @@ const Login = () => {
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
             <img 
-              src="/lovable-uploads/b6c7b51c-0e55-462b-b021-0fdba9d0bd55.png" 
+              src="/logo.png" 
               alt="JPS CRIAÇÕES Logo" 
               className="h-16 w-16 rounded-full object-cover border-2 border-pink-200 shadow-sm dark:border-pink-400/50"
             />

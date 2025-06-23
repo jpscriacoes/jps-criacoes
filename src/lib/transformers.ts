@@ -6,6 +6,7 @@ export const transformProduct = (product: DatabaseProduct): TransformedProduct =
     name: product.name,
     description: product.description,
     category: product.categories?.name || '',
+    categoryId: product.category_id,
     material: product.material,
     occasion: product.occasion,
     theme: product.theme,

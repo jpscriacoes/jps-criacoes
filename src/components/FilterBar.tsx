@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useCategories } from '@/hooks/useCategories';
 import { useFilters } from '@/hooks/useFilters';
+import CategoryIcon from '@/components/CategoryIcon';
 
 interface FilterBarProps {
   searchTerm: string;
@@ -98,7 +99,7 @@ const FilterBar = ({
                 : 'bg-white/70 border-pink-200 hover:bg-pink-50'
             }`}
           >
-            <span className="mr-2">{category.icon}</span>
+            <CategoryIcon icon={category.icon} className="mr-2 h-5 w-5 text-base" />
             {category.name}
           </Button>
         ))}

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import FilterBar from '@/components/FilterBar';
 import ProductCard from '@/components/ProductCard';
 import ProductDetailModal from '@/components/ProductDetailModal';
@@ -35,6 +36,7 @@ const Catalog = () => {
       name: product.name,
       description: product.description,
       category: product.categories?.name || '',
+      categoryId: product.category_id,
       material: product.material,
       occasion: product.occasion,
       theme: product.theme,
@@ -53,7 +55,7 @@ const Catalog = () => {
                           product.description.toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesCategory = selectedCategory === 'all' || 
-                            product.category.toLowerCase() === selectedCategory.toLowerCase();
+                            product.categoryId === selectedCategory;
       
       const matchesMaterial = selectedFilters.materials.length === 0 || 
                             selectedFilters.materials.includes(product.material);
@@ -94,7 +96,7 @@ const Catalog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col">
       <Header />
       
       <FilterBar
@@ -106,7 +108,7 @@ const Catalog = () => {
         onFiltersChange={setSelectedFilters}
       />
 
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 py-6 flex-1">
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🎨</div>
@@ -139,6 +141,8 @@ const Catalog = () => {
           </>
         )}
       </main>
+
+      <Footer />
 
       <ProductDetailModal
         product={selectedProduct}

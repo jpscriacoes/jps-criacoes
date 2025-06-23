@@ -4,13 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import ProductDetailModal from '@/components/ProductDetailModal';
 import CategoryCarousel from '@/components/CategoryCarousel';
 import { useProducts, useTransformedProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
 import { TransformedProduct } from '@/types';
-import TestComponent from '@/components/TestComponent';
+import CategoryIcon from '@/components/CategoryIcon';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -19,20 +20,11 @@ const Index = () => {
   const [favorites, setFavorites] = useState<string[]>(
     JSON.parse(localStorage.getItem('cake-toppers-favorites') || '[]')
   );
-  const [showTestComponent, setShowTestComponent] = useState(true); // ✅ SEMPRE MOSTRAR para debug
 
   // ✅ SIMPLIFICAR para debug
   const { data: products, isLoading: productsLoading, error: productsError } = useProducts();
   const { data: transformedProducts, isLoading: transformedLoading, error: transformedError } = useTransformedProducts();
   const { data: categories, isLoading: categoriesLoading, error: categoriesError } = useCategories();
-
-  console.log('🔍 DEBUG - Index render:', {
-    products: products?.length,
-    transformedProducts: transformedProducts?.length,
-    categories: categories?.length,
-    loading: { productsLoading, transformedLoading, categoriesLoading },
-    errors: { productsError, transformedError, categoriesError }
-  });
 
   // ✅ USAR dados transformados quando disponíveis, senão usar transformação manual
   const finalProducts = useMemo(() => {
@@ -46,6 +38,7 @@ const Index = () => {
       name: product.name,
       description: product.description,
       category: product.categories?.name || '',
+      categoryId: product.category_id,
       material: product.material,
       occasion: product.occasion,
       theme: product.theme,
@@ -96,15 +89,10 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col">
       <Header />
 
-      {/* ✅ SEMPRE MOSTRAR componente de teste para debug */}
-      <div className="fixed top-20 right-4 z-50">
-        <TestComponent />
-      </div>
-
-      <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+      <main className="max-w-7xl mx-auto px-4 py-6 space-y-8 flex-1">
         {/* Hero Section */}
         <section className="text-center py-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
@@ -147,8 +135,8 @@ const Index = () => {
                   className="gradient-card hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105"
                   onClick={() => handleCategoryClick(category.name)}
                 >
-                  <CardContent className="p-6 text-center">
-                    <div className="text-3xl mb-3">{category.icon}</div>
+                  <CardContent className="p-6 text-center flex flex-col items-center justify-center">
+                    <CategoryIcon icon={category.icon} className="mb-3 h-10 w-10 text-3xl" />
                     <h4 className="font-semibold text-gray-800 dark:text-gray-200">{category.name}</h4>
                   </CardContent>
                 </Card>
@@ -196,6 +184,8 @@ const Index = () => {
           </section>
         )}
       </main>
+
+      <Footer />
 
       {/* Product Detail Modal */}
       <ProductDetailModal

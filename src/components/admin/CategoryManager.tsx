@@ -8,6 +8,7 @@ import { Plus, Edit, Trash2, Save, X, Upload } from 'lucide-react';
 import { useCategories, useCreateCategory, useUpdateCategory, useDeleteCategory, useUploadCategoryImage } from '@/hooks/useCategories';
 import { toast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import CategoryIcon from '../CategoryIcon';
 
 type IconType = 'emoji' | 'upload';
 
@@ -131,11 +132,6 @@ const CategoryManager = () => {
 
   if (isLoading) {
     return <div className="flex justify-center p-8">Carregando categorias...</div>;
-  }
-
-  const renderCategoryIcon = (icon: string) => {
-    const isUrl = icon.startsWith('http');
-    return isUrl ? <img src={icon} alt="ícone" className="w-8 h-8 rounded-full object-cover" /> : <span className="text-2xl">{icon}</span>;
   }
 
   return (
@@ -268,7 +264,7 @@ const CategoryManager = () => {
                   ) : (
                     <>
                       <div className="flex items-center gap-4">
-                        {renderCategoryIcon(category.icon)}
+                        <CategoryIcon icon={category.icon} />
                         <span className="font-medium">{category.name}</span>
                         <Badge variant="outline">ID: {category.id}</Badge>
                       </div>

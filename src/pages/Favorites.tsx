@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import ProductDetailModal from '@/components/ProductDetailModal';
 import { useProducts, useTransformedProducts } from '@/hooks/useProducts';
@@ -26,6 +27,7 @@ const Favorites = () => {
       name: product.name,
       description: product.description,
       category: product.categories?.name || '',
+      categoryId: product.category_id,
       material: product.material,
       occasion: product.occasion,
       theme: product.theme,
@@ -64,10 +66,10 @@ const Favorites = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 py-6 flex-1">
         {favoriteProducts.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">💖</div>
@@ -114,6 +116,8 @@ const Favorites = () => {
           </>
         )}
       </main>
+
+      <Footer />
 
       <ProductDetailModal
         product={selectedProduct}

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +10,7 @@ import { Upload, X } from 'lucide-react';
 import { useCategories } from '@/hooks/useCategories';
 import { useCreateProduct, useUpdateProduct, useUploadProductImage, Product } from '@/hooks/useProducts';
 import { toast } from '@/hooks/use-toast';
+import CategoryIcon from '@/components/CategoryIcon';
 
 interface ProductFormProps {
   product?: Product;
@@ -151,7 +151,10 @@ const ProductForm = ({ product, onSuccess, onCancel }: ProductFormProps) => {
               <SelectContent>
                 {categories?.map((category) => (
                   <SelectItem key={category.id} value={category.id}>
-                    {category.icon} {category.name}
+                    <div className="flex items-center gap-2">
+                      <CategoryIcon icon={category.icon} className="h-5 w-5 text-lg" />
+                      <span>{category.name}</span>
+                    </div>
                   </SelectItem>
                 ))}
               </SelectContent>

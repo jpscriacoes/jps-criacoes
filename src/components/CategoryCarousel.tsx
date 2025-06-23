@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import { useProducts, useTransformedProducts } from '@/hooks/useProducts';
 import { TransformedProduct } from '@/types';
+import CategoryIcon from '@/components/CategoryIcon';
 
 interface CategoryCarouselProps {
   categoryId: string;
@@ -91,7 +92,7 @@ const CategoryCarousel = ({
     <Card className="overflow-hidden bg-white/90 dark:bg-gray-800/90 shadow-lg">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-lg">
-          <span className="text-2xl">{categoryIcon}</span>
+          <CategoryIcon icon={categoryIcon} className="w-7 h-7" />
           {categoryName}
           <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
             ({categoryProducts.length} produtos)

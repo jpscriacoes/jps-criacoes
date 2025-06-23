@@ -28,6 +28,7 @@ export interface TransformedProduct {
   name: string;
   description: string;
   category: string;
+  categoryId: string;
   material: string;
   occasion: string;
   theme: string;
