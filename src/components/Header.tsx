@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Heart, Cake, BookOpen, Settings } from 'lucide-react';
@@ -19,7 +18,7 @@ const Header = () => {
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-3">
             <img 
-              src="/lovable-uploads/b6c7b51c-0e55-462b-b021-0fdba9d0bd55.png" 
+              src="/logo.png" 
               alt="JPS CRIAÇÕES Logo" 
               className="h-10 w-10 rounded-full object-cover border-2 border-pink-200 shadow-sm dark:border-pink-400/50 dark:shadow-pink-500/20"
             />
@@ -75,7 +74,7 @@ const Header = () => {
             {/* Mobile logo for smaller screens */}
             <Link to="/" className="flex items-center space-x-2 md:hidden">
               <img 
-                src="/lovable-uploads/b6c7b51c-0e55-462b-b021-0fdba9d0bd55.png" 
+                src="/logo.png" 
                 alt="JPS CRIAÇÕES Logo" 
                 className="h-8 w-8 rounded-full object-cover border border-pink-200 dark:border-pink-400/50"
               />

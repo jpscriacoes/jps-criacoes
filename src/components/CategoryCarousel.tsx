@@ -1,10 +1,10 @@
-
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts, useTransformedProducts } from '@/hooks/useProducts';
+import { TransformedProduct } from '@/types';
 
 interface CategoryCarouselProps {
   categoryId: string;
@@ -12,7 +12,7 @@ interface CategoryCarouselProps {
   categoryIcon: string;
   favorites: string[];
   onToggleFavorite: (productId: string) => void;
-  onProductClick: (product: any) => void;
+  onProductClick: (product: TransformedProduct) => void;
 }
 
 const CategoryCarousel = ({ 
@@ -25,42 +25,49 @@ const CategoryCarousel = ({
 }: CategoryCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { data: products } = useProducts();
+  const { data: transformedProducts } = useTransformedProducts();
 
-  const categoryProducts = products?.filter(product => 
-    product.category_id === categoryId
-  ).slice(0, 20).map(product => ({
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    category: product.categories?.name || '',
-    material: product.material,
-    occasion: product.occasion,
-    theme: product.theme,
-    imageUrl: product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
-    images: [product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'],
-    featured: product.featured,
-    createdAt: product.created_at
-  })) || [];
+  const categoryProducts = useMemo(() => {
+    if (transformedProducts && transformedProducts.length > 0) {
+      return transformedProducts.filter(product => 
+        product.category.toLowerCase() === categoryName.toLowerCase()
+      ).slice(0, 20);
+    }
+    
+    return products?.filter(product => 
+      product.category_id === categoryId
+    ).slice(0, 20).map(product => ({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      category: product.categories?.name || '',
+      material: product.material,
+      occasion: product.occasion,
+      theme: product.theme,
+      imageUrl: product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+      images: [product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'],
+      featured: product.featured,
+      createdAt: product.created_at
+    })) || [];
+  }, [transformedProducts, products, categoryId, categoryName]);
 
   if (!categoryProducts.length) {
     return null;
   }
 
-  // Responsivo: mais itens por tela no desktop para cards menores
   const getItemsPerView = () => {
     if (typeof window !== 'undefined') {
-      if (window.innerWidth < 640) return 2; // mobile: 2 cards
-      if (window.innerWidth < 768) return 3; // tablet small: 3 cards  
-      if (window.innerWidth < 1024) return 4; // tablet: 4 cards
-      if (window.innerWidth < 1280) return 5; // desktop small: 5 cards
-      return 6; // desktop large: 6 cards (mais compacto)
+      if (window.innerWidth < 640) return 2;
+      if (window.innerWidth < 768) return 3;
+      if (window.innerWidth < 1024) return 4;
+      if (window.innerWidth < 1280) return 5;
+      return 6;
     }
     return 5;
   };
 
   const [itemsPerView, setItemsPerView] = useState(getItemsPerView());
 
-  // Atualizar itemsPerView quando a tela redimensionar
   React.useEffect(() => {
     const handleResize = () => {
       setItemsPerView(getItemsPerView());
@@ -94,7 +101,6 @@ const CategoryCarousel = ({
       
       <CardContent className="relative px-4 sm:px-6 pb-6">
         <div className="flex items-center gap-2 sm:gap-4">
-          {/* Botão Anterior */}
           {categoryProducts.length > itemsPerView && (
             <Button
               variant="outline"
@@ -107,7 +113,6 @@ const CategoryCarousel = ({
             </Button>
           )}
 
-          {/* Container do Carrossel - Compacto */}
           <div className="overflow-hidden flex-1">
             <div 
               className="flex gap-2 sm:gap-3 transition-transform duration-300 ease-in-out"
@@ -138,7 +143,6 @@ const CategoryCarousel = ({
             </div>
           </div>
 
-          {/* Botão Próximo */}
           {categoryProducts.length > itemsPerView && (
             <Button
               variant="outline"
@@ -152,7 +156,6 @@ const CategoryCarousel = ({
           )}
         </div>
 
-        {/* Indicadores - Compactos */}
         {categoryProducts.length > itemsPerView && maxIndex > 0 && (
           <div className="flex justify-center mt-4 gap-1.5">
             {Array.from({ length: maxIndex + 1 }, (_, index) => (

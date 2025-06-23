@@ -1,11 +1,10 @@
-
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import ProductDetailModal from '@/components/ProductDetailModal';
-import { useProducts } from '@/hooks/useProducts';
+import { useProducts, useTransformedProducts } from '@/hooks/useProducts';
 
 const Favorites = () => {
   const navigate = useNavigate();
@@ -15,23 +14,31 @@ const Favorites = () => {
   );
 
   const { data: products, isLoading } = useProducts();
+  const { data: transformedProducts } = useTransformedProducts();
 
-  // Transform and filter favorite products
-  const favoriteProducts = products?.filter(product => 
+  const finalProducts = useMemo(() => {
+    if (transformedProducts && transformedProducts.length > 0) {
+      return transformedProducts;
+    }
+    
+    return products?.map(product => ({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      category: product.categories?.name || '',
+      material: product.material,
+      occasion: product.occasion,
+      theme: product.theme,
+      imageUrl: product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
+      images: [product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'],
+      featured: product.featured,
+      createdAt: product.created_at
+    })) || [];
+  }, [transformedProducts, products]);
+
+  const favoriteProducts = finalProducts.filter(product => 
     favorites.includes(product.id)
-  ).map(product => ({
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    category: product.categories?.name || '',
-    material: product.material,
-    occasion: product.occasion,
-    theme: product.theme,
-    imageUrl: product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
-    images: [product.image_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400'],
-    featured: product.featured,
-    createdAt: product.created_at
-  })) || [];
+  );
 
   const toggleFavorite = (productId: string) => {
     const newFavorites = favorites.filter(id => id !== productId);
@@ -50,6 +57,7 @@ const Favorites = () => {
         <div className="text-center">
           <div className="text-6xl mb-4">💖</div>
           <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Carregando favoritos...</h3>
+          <p className="text-sm text-gray-500 mt-2">Preparando seus produtos favoritos</p>
         </div>
       </div>
     );

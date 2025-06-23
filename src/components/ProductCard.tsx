@@ -1,17 +1,16 @@
-
 import { useState } from 'react';
 import { Bookmark, Share } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Product } from "@/data/mockData";
+import { TransformedProduct } from "@/types";
 import { toast } from "@/hooks/use-toast";
 
 interface ProductCardProps {
-  product: Product;
+  product: TransformedProduct;
   isFavorite: boolean;
   onToggleFavorite: (productId: string) => void;
-  onClick: (product: Product) => void;
+  onClick: (product: TransformedProduct) => void;
 }
 
 const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: ProductCardProps) => {

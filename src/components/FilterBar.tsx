@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { categories, materials, occasions, themes } from "@/data/mockData";
+import { useCategories } from '@/hooks/useCategories';
+import { useFilters } from '@/hooks/useFilters';
 
 interface FilterBarProps {
   searchTerm: string;
@@ -28,6 +28,10 @@ const FilterBar = ({
   onFiltersChange
 }: FilterBarProps) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  
+  // ✅ USAR dados dinâmicos
+  const { data: categories } = useCategories();
+  const { materials, occasions, themes } = useFilters();
 
   const toggleFilter = (type: 'materials' | 'occasions' | 'themes', value: string) => {
     const currentFilters = selectedFilters[type];
@@ -69,7 +73,20 @@ const FilterBar = ({
 
       {/* Category Pills */}
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-        {categories.map((category) => (
+        <Button
+          variant={selectedCategory === 'all' ? "default" : "outline"}
+          size="sm"
+          onClick={() => onCategoryChange('all')}
+          className={`whitespace-nowrap transition-all duration-200 ${
+            selectedCategory === 'all'
+              ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-md'
+              : 'bg-white/70 border-pink-200 hover:bg-pink-50'
+          }`}
+        >
+          🎨 Todos
+        </Button>
+        
+        {categories?.map((category) => (
           <Button
             key={category.id}
             variant={selectedCategory === category.id ? "default" : "outline"}
@@ -110,67 +127,73 @@ const FilterBar = ({
         
         <CollapsibleContent className="space-y-4 pt-4">
           {/* Materials */}
-          <div>
-            <h4 className="text-sm font-medium mb-2 text-gray-700">Materiais</h4>
-            <div className="flex flex-wrap gap-2">
-              {materials.map((material) => (
-                <Badge
-                  key={material}
-                  variant={selectedFilters.materials.includes(material) ? "default" : "outline"}
-                  className={`cursor-pointer transition-all duration-200 ${
-                    selectedFilters.materials.includes(material)
-                      ? 'bg-pink-500 text-white'
-                      : 'border-pink-200 hover:bg-pink-50'
-                  }`}
-                  onClick={() => toggleFilter('materials', material)}
-                >
-                  {material}
-                </Badge>
-              ))}
+          {materials.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium mb-2 text-gray-700">Materiais</h4>
+              <div className="flex flex-wrap gap-2">
+                {materials.map((material) => (
+                  <Badge
+                    key={material}
+                    variant={selectedFilters.materials.includes(material) ? "default" : "outline"}
+                    className={`cursor-pointer transition-all duration-200 ${
+                      selectedFilters.materials.includes(material)
+                        ? 'bg-pink-500 text-white'
+                        : 'border-pink-200 hover:bg-pink-50'
+                    }`}
+                    onClick={() => toggleFilter('materials', material)}
+                  >
+                    {material}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Occasions */}
-          <div>
-            <h4 className="text-sm font-medium mb-2 text-gray-700">Ocasiões</h4>
-            <div className="flex flex-wrap gap-2">
-              {occasions.map((occasion) => (
-                <Badge
-                  key={occasion}
-                  variant={selectedFilters.occasions.includes(occasion) ? "default" : "outline"}
-                  className={`cursor-pointer transition-all duration-200 ${
-                    selectedFilters.occasions.includes(occasion)
-                      ? 'bg-purple-500 text-white'
-                      : 'border-purple-200 hover:bg-purple-50'
-                  }`}
-                  onClick={() => toggleFilter('occasions', occasion)}
-                >
-                  {occasion}
-                </Badge>
-              ))}
+          {occasions.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium mb-2 text-gray-700">Ocasiões</h4>
+              <div className="flex flex-wrap gap-2">
+                {occasions.map((occasion) => (
+                  <Badge
+                    key={occasion}
+                    variant={selectedFilters.occasions.includes(occasion) ? "default" : "outline"}
+                    className={`cursor-pointer transition-all duration-200 ${
+                      selectedFilters.occasions.includes(occasion)
+                        ? 'bg-purple-500 text-white'
+                        : 'border-purple-200 hover:bg-purple-50'
+                    }`}
+                    onClick={() => toggleFilter('occasions', occasion)}
+                  >
+                    {occasion}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Themes */}
-          <div>
-            <h4 className="text-sm font-medium mb-2 text-gray-700">Temas</h4>
-            <div className="flex flex-wrap gap-2">
-              {themes.map((theme) => (
-                <Badge
-                  key={theme}
-                  variant={selectedFilters.themes.includes(theme) ? "default" : "outline"}
-                  className={`cursor-pointer transition-all duration-200 ${
-                    selectedFilters.themes.includes(theme)
-                      ? 'bg-pink-600 text-white'
-                      : 'border-pink-200 hover:bg-pink-50'
-                  }`}
-                  onClick={() => toggleFilter('themes', theme)}
-                >
-                  {theme}
-                </Badge>
-              ))}
+          {themes.length > 0 && (
+            <div>
+              <h4 className="text-sm font-medium mb-2 text-gray-700">Temas</h4>
+              <div className="flex flex-wrap gap-2">
+                {themes.map((theme) => (
+                  <Badge
+                    key={theme}
+                    variant={selectedFilters.themes.includes(theme) ? "default" : "outline"}
+                    className={`cursor-pointer transition-all duration-200 ${
+                      selectedFilters.themes.includes(theme)
+                        ? 'bg-pink-600 text-white'
+                        : 'border-pink-200 hover:bg-pink-50'
+                    }`}
+                    onClick={() => toggleFilter('themes', theme)}
+                  >
+                    {theme}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </CollapsibleContent>
       </Collapsible>
     </div>

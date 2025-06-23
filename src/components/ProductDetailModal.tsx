@@ -1,14 +1,13 @@
-
 import { useState } from 'react';
 import { Bookmark, Share, ZoomIn, ZoomOut } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Product } from "@/data/mockData";
+import { TransformedProduct } from "@/types";
 import { toast } from "@/hooks/use-toast";
 
 interface ProductDetailModalProps {
-  product: Product | null;
+  product: TransformedProduct | null;
   isOpen: boolean;
   onClose: () => void;
   isFavorite: boolean;
@@ -117,11 +116,6 @@ const ProductDetailModal = ({
               <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white">
                 {product.category}
               </Badge>
-              {product.price && (
-                <span className="text-2xl font-bold text-pink-600">
-                  R$ {product.price}
-                </span>
-              )}
             </div>
 
             {/* Product Details */}
