@@ -71,6 +71,13 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Handle skip waiting messages
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 // Background sync
 self.addEventListener('sync', (event) => {
   if (event.tag === 'background-sync') {

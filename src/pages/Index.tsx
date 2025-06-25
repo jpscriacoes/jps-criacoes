@@ -12,6 +12,7 @@ import { useProducts, useTransformedProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
 import { TransformedProduct } from '@/types';
 import CategoryIcon from '@/components/CategoryIcon';
+import PWALifecycle from '@/components/PWALifecycle';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -89,10 +90,10 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
       <Header />
-
-      <main className="max-w-7xl mx-auto px-4 py-6 space-y-8 flex-1">
+      
+      <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <section className="text-center py-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
@@ -124,7 +125,12 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ✅ SIMPLIFICAR - Mostrar apenas categorias se disponíveis */}
+        {/* PWA Lifecycle Status - Mobile Only */}
+        <div className="block md:hidden mb-8">
+          <PWALifecycle />
+        </div>
+
+        {/* Featured Categories */}
         {categories && categories.length > 0 && (
           <section>
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Explore por Categoria</h3>
@@ -145,7 +151,7 @@ const Index = () => {
           </section>
         )}
 
-        {/* ✅ SIMPLIFICAR - Mostrar apenas produtos se disponíveis */}
+        {/* Products by Category */}
         {finalProducts.length > 0 && (
           <section>
             <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Produtos Disponíveis</h3>
@@ -163,30 +169,16 @@ const Index = () => {
           </section>
         )}
 
-        {/* ✅ MOSTRAR mensagem se não há dados */}
-        {!categoriesLoading && (!categories || categories.length === 0) && (
-          <section className="text-center py-8">
-            <div className="text-6xl mb-4">📝</div>
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              Nenhuma categoria encontrada
-            </h3>
-            <p className="text-gray-500">Verifique a conexão com o banco de dados</p>
-          </section>
-        )}
-
-        {!productsLoading && finalProducts.length === 0 && (
-          <section className="text-center py-8">
-            <div className="text-6xl mb-4">🎂</div>
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              Nenhum produto encontrado
-            </h3>
-            <p className="text-gray-500">Verifique a conexão com o banco de dados</p>
-          </section>
-        )}
+        {/* PWA Lifecycle Status - Desktop Only */}
+        <div className="hidden md:block mb-8">
+          <div className="flex justify-center">
+            <PWALifecycle />
+          </div>
+        </div>
       </main>
-
+      
       <Footer />
-
+      
       {/* Product Detail Modal */}
       <ProductDetailModal
         product={selectedProduct}
