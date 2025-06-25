@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -96,13 +97,13 @@ const Index = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <section className="text-center py-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4">
             Transforme sua festa em um
             <span className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent block">
               momento mágico ✨
             </span>
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg mb-8 max-w-2xl mx-auto">
             Descubra nossa coleção exclusiva de topos de bolo e decorações artesanais 
             personalizadas para tornar sua celebração única e especial.
           </p>
@@ -132,18 +133,18 @@ const Index = () => {
 
         {/* Featured Categories */}
         {categories && categories.length > 0 && (
-          <section>
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Explore por Categoria</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <section className="mb-8">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Explore por Categoria</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
               {categories.map((category) => (
                 <Card
                   key={category.id}
                   className="gradient-card hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105"
                   onClick={() => handleCategoryClick(category.name)}
                 >
-                  <CardContent className="p-6 text-center flex flex-col items-center justify-center">
-                    <CategoryIcon icon={category.icon} className="mb-3 h-10 w-10 text-3xl" />
-                    <h4 className="font-semibold text-gray-800 dark:text-gray-200">{category.name}</h4>
+                  <CardContent className="p-3 sm:p-4 md:p-6 text-center flex flex-col items-center justify-center">
+                    <CategoryIcon icon={category.icon} className="mb-2 sm:mb-3 h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 text-xl sm:text-2xl md:text-3xl" />
+                    <h4 className="font-semibold text-gray-800 dark:text-gray-200 text-xs sm:text-sm md:text-base">{category.name}</h4>
                   </CardContent>
                 </Card>
               ))}
@@ -153,10 +154,10 @@ const Index = () => {
 
         {/* Products by Category */}
         {finalProducts.length > 0 && (
-          <section>
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Produtos Disponíveis</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {finalProducts.slice(0, 8).map((product) => (
+          <section className="mb-8">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Produtos Disponíveis</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
+              {finalProducts.slice(0, 12).map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}

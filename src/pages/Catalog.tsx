@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -108,7 +109,7 @@ const Catalog = () => {
         onFiltersChange={setSelectedFilters}
       />
 
-      <main className="max-w-7xl mx-auto px-4 py-6 flex-1">
+      <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6 flex-1">
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🎨</div>
@@ -122,12 +123,12 @@ const Catalog = () => {
         ) : (
           <>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200">
                 {filteredProducts.length} produto{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}
