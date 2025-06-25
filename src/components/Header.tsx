@@ -1,115 +1,200 @@
+
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Heart, Cake, BookOpen, Settings } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, Heart, User, ShoppingBag, Search, Home, Grid3X3, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/hooks/useAuth';
+import PWAInstallButton from './PWAInstallButton';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
-  const isActive = (path: string) => location.pathname === path;
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/catalog?search=${encodeURIComponent(searchTerm)}`);
+      setSearchTerm('');
+      setIsMenuOpen(false);
+    }
+  };
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const favorites = JSON.parse(localStorage.getItem('cake-toppers-favorites') || '[]');
+  const favoritesCount = favorites.length;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:bg-slate-900/95 dark:border-slate-700/50">
-      <div className="container flex h-16 items-center">
-        <div className="mr-4 hidden md:flex">
-          <Link to="/" className="mr-6 flex items-center space-x-3">
-            <img 
-              src="/logo.png" 
-              alt="JPS CRIAÇÕES Logo" 
-              className="h-10 w-10 rounded-full object-cover border-2 border-pink-200 shadow-sm dark:border-pink-400/50 dark:shadow-pink-500/20"
-            />
-            <span className="hidden font-bold text-lg sm:inline-block bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent dark:from-pink-400 dark:to-purple-400">
-              JPS CRIAÇÕES
-            </span>
+    <header className="bg-white/95 backdrop-blur-sm border-b border-pink-100 sticky top-0 z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3">
+            <img src="/logo.png" alt="JPS Criações" className="h-10 w-10 rounded-full" />
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                JPS Criações
+              </h1>
+              <p className="text-xs text-gray-500">Papelaria Personalizada</p>
+            </div>
           </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
-            <Link
-              to="/"
-              className={`transition-colors hover:text-foreground/80 ${
-                isActive('/') ? 'text-foreground dark:text-slate-100' : 'text-foreground/60 dark:text-slate-300'
-              }`}
-            >
-              Início
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-6">
+            <Link to="/" className="flex items-center space-x-1 text-gray-700 hover:text-pink-600 transition-colors">
+              <Home className="h-4 w-4" />
+              <span>Início</span>
             </Link>
-            <Link
-              to="/catalog"
-              className={`transition-colors hover:text-foreground/80 ${
-                isActive('/catalog') ? 'text-foreground dark:text-slate-100' : 'text-foreground/60 dark:text-slate-300'
-              }`}
-            >
-              Catálogo
+            <Link to="/catalog" className="flex items-center space-x-1 text-gray-700 hover:text-pink-600 transition-colors">
+              <Grid3X3 className="h-4 w-4" />
+              <span>Catálogo</span>
             </Link>
-            <Link
-              to="/favorites"
-              className={`transition-colors hover:text-foreground/80 ${
-                isActive('/favorites') ? 'text-foreground dark:text-slate-100' : 'text-foreground/60 dark:text-slate-300'
-              }`}
-            >
-              Favoritos
+            <Link to="/favorites" className="flex items-center space-x-1 text-gray-700 hover:text-pink-600 transition-colors relative">
+              <Heart className="h-4 w-4" />
+              <span>Favoritos</span>
+              {favoritesCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
+                  {favoritesCount}
+                </Badge>
+              )}
             </Link>
-            <Link
-              to="/admin"
-              className={`transition-colors hover:text-foreground/80 ${
-                isActive('/admin') ? 'text-foreground dark:text-slate-100' : 'text-foreground/60 dark:text-slate-300'
-              }`}
-            >
-              Admin
-            </Link>
+            {user?.role === 'admin' && (
+              <Link to="/admin" className="flex items-center space-x-1 text-gray-700 hover:text-pink-600 transition-colors">
+                <Users className="h-4 w-4" />
+                <span>Admin</span>
+              </Link>
+            )}
           </nav>
+
+          {/* Desktop Search */}
+          <form onSubmit={handleSearch} className="hidden md:flex items-center space-x-2">
+            <Input
+              type="search"
+              placeholder="Buscar produtos..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-64 bg-gray-50 border-gray-200 focus:border-pink-400"
+            />
+            <Button type="submit" size="sm" variant="outline">
+              <Search className="h-4 w-4" />
+            </Button>
+          </form>
+
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center space-x-3">
+            <PWAInstallButton />
+            {user ? (
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-gray-600">Olá, {user.email?.split('@')[0]}</span>
+                <Button onClick={logout} variant="outline" size="sm">
+                  Sair
+                </Button>
+              </div>
+            ) : (
+              <Link to="/login">
+                <Button variant="outline" size="sm" className="flex items-center space-x-1">
+                  <User className="h-4 w-4" />
+                  <span>Entrar</span>
+                </Button>
+              </Link>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="lg:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
-        <Button
-          variant="ghost"
-          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden dark:text-slate-200"
-          onClick={toggleMenu}
-        >
-          <Menu className="h-6 w-6" />
-          <span className="sr-only">Toggle Menu</span>
-        </Button>
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
-            {/* Mobile logo for smaller screens */}
-            <Link to="/" className="flex items-center space-x-2 md:hidden">
-              <img 
-                src="/logo.png" 
-                alt="JPS CRIAÇÕES Logo" 
-                className="h-8 w-8 rounded-full object-cover border border-pink-200 dark:border-pink-400/50"
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="lg:hidden border-t border-pink-100 py-4 space-y-4">
+            {/* Mobile Search */}
+            <form onSubmit={handleSearch} className="flex space-x-2">
+              <Input
+                type="search"
+                placeholder="Buscar produtos..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex-1 bg-gray-50 border-gray-200 focus:border-pink-400"
               />
-              <span className="font-bold text-sm bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent dark:from-pink-400 dark:to-purple-400">
-                JPS CRIAÇÕES
-              </span>
-            </Link>
+              <Button type="submit" size="sm" variant="outline">
+                <Search className="h-4 w-4" />
+              </Button>
+            </form>
+
+            {/* Mobile Navigation */}
+            <nav className="space-y-2">
+              <Link 
+                to="/" 
+                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-pink-50 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Home className="h-5 w-5 text-pink-600" />
+                <span>Início</span>
+              </Link>
+              <Link 
+                to="/catalog" 
+                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-pink-50 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Grid3X3 className="h-5 w-5 text-pink-600" />
+                <span>Catálogo</span>
+              </Link>
+              <Link 
+                to="/favorites" 
+                className="flex items-center space-x-2 p-2 rounded-lg hover:bg-pink-50 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Heart className="h-5 w-5 text-pink-600" />
+                <span>Favoritos</span>
+                {favoritesCount > 0 && (
+                  <Badge variant="destructive" className="ml-auto">
+                    {favoritesCount}
+                  </Badge>
+                )}
+              </Link>
+              {user?.role === 'admin' && (
+                <Link 
+                  to="/admin" 
+                  className="flex items-center space-x-2 p-2 rounded-lg hover:bg-pink-50 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Users className="h-5 w-5 text-pink-600" />
+                  <span>Admin</span>
+                </Link>
+              )}
+            </nav>
+
+            {/* Mobile Actions */}
+            <div className="space-y-2 pt-2 border-t border-pink-100">
+              <PWAInstallButton />
+              {user ? (
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-600">Olá, {user.email?.split('@')[0]}</p>
+                  <Button onClick={logout} variant="outline" size="sm" className="w-full">
+                    Sair
+                  </Button>
+                </div>
+              ) : (
+                <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" size="sm" className="w-full flex items-center justify-center space-x-1">
+                    <User className="h-4 w-4" />
+                    <span>Entrar</span>
+                  </Button>
+                </Link>
+              )}
+            </div>
           </div>
-          <nav className="flex items-center space-x-2">
-            <ThemeToggle />
-          </nav>
-        </div>
+        )}
       </div>
-      {isMenuOpen && (
-        <div className="fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] w-full grid-flow-row auto-rows-max overflow-auto p-6 pb-16 shadow-md animate-in slide-in-from-bottom-80 md:hidden dark:bg-slate-900/95">
-          <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md dark:bg-slate-800 dark:border dark:border-slate-600/50">
-            <Link to="/" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline dark:text-slate-200 dark:hover:bg-slate-700/50">
-              <Cake className="mr-2 h-4 w-4" />
-              Início
-            </Link>
-            <Link to="/catalog" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline dark:text-slate-200 dark:hover:bg-slate-700/50">
-              <BookOpen className="mr-2 h-4 w-4" />
-              Catálogo
-            </Link>
-            <Link to="/favorites" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline dark:text-slate-200 dark:hover:bg-slate-700/50">
-              <Heart className="mr-2 h-4 w-4" />
-              Favoritos
-            </Link>
-            <Link to="/admin" className="flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline dark:text-slate-200 dark:hover:bg-slate-700/50">
-              <Settings className="mr-2 h-4 w-4" />
-              Admin
-            </Link>
-          </div>
-        </div>
-      )}
     </header>
   );
 };
