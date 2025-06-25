@@ -54,10 +54,10 @@ const ProductDetailModal = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-900 pr-8">
+          <DialogTitle className="text-xl font-bold text-gray-900 dark:text-slate-100 pr-8">
             {product.name}
           </DialogTitle>
-          <DialogDescription className="text-gray-600">
+          <DialogDescription className="text-gray-600 dark:text-slate-300">
             {product.description}
           </DialogDescription>
         </DialogHeader>
@@ -65,7 +65,7 @@ const ProductDetailModal = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
+            <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-slate-700">
               <img
                 src={product.images[currentImageIndex]}
                 alt={product.name}
@@ -78,7 +78,7 @@ const ProductDetailModal = ({
               <Button
                 size="sm"
                 variant="secondary"
-                className="absolute top-3 right-3 bg-white/90 hover:bg-white"
+                className="absolute top-3 right-3 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-700 text-gray-700 dark:text-slate-100 border-0 dark:border-slate-600"
                 onClick={() => setIsZoomed(!isZoomed)}
               >
                 {isZoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
@@ -94,8 +94,8 @@ const ProductDetailModal = ({
                     onClick={() => setCurrentImageIndex(index)}
                     className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${
                       currentImageIndex === index 
-                        ? 'border-pink-500' 
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-pink-500 dark:border-pink-400' 
+                        : 'border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500'
                     }`}
                   >
                     <img
@@ -121,23 +121,23 @@ const ProductDetailModal = ({
             {/* Product Details */}
             <div className="space-y-4">
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Detalhes do Produto</h4>
+                <h4 className="font-semibold text-gray-900 dark:text-slate-100 mb-2">Detalhes do Produto</h4>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <span className="text-sm text-gray-500">Material:</span>
-                    <Badge variant="outline" className="ml-2 border-pink-200">
+                    <span className="text-sm text-gray-500 dark:text-slate-400">Material:</span>
+                    <Badge variant="outline" className="ml-2 border-pink-200 dark:border-pink-600 text-pink-700 dark:text-pink-300 bg-pink-50/50 dark:bg-pink-900/20">
                       {product.material}
                     </Badge>
                   </div>
                   <div>
-                    <span className="text-sm text-gray-500">Ocasião:</span>
-                    <Badge variant="outline" className="ml-2 border-purple-200">
+                    <span className="text-sm text-gray-500 dark:text-slate-400">Ocasião:</span>
+                    <Badge variant="outline" className="ml-2 border-purple-200 dark:border-purple-600 text-purple-700 dark:text-purple-300 bg-purple-50/50 dark:bg-purple-900/20">
                       {product.occasion}
                     </Badge>
                   </div>
                   <div className="col-span-2">
-                    <span className="text-sm text-gray-500">Tema:</span>
-                    <Badge variant="outline" className="ml-2 border-pink-200">
+                    <span className="text-sm text-gray-500 dark:text-slate-400">Tema:</span>
+                    <Badge variant="outline" className="ml-2 border-pink-200 dark:border-pink-600 text-pink-700 dark:text-pink-300 bg-pink-50/50 dark:bg-pink-900/20">
                       {product.theme}
                     </Badge>
                   </div>
@@ -146,8 +146,8 @@ const ProductDetailModal = ({
 
               {/* Creation Date */}
               <div>
-                <span className="text-sm text-gray-500">Criado em:</span>
-                <p className="text-sm font-medium">
+                <span className="text-sm text-gray-500 dark:text-slate-400">Criado em:</span>
+                <p className="text-sm font-medium text-gray-900 dark:text-slate-100">
                   {new Date(product.createdAt).toLocaleDateString('pt-BR')}
                 </p>
               </div>
@@ -161,7 +161,7 @@ const ProductDetailModal = ({
                 className={`flex-1 transition-all duration-200 ${
                   isFavorite
                     ? 'bg-pink-500 hover:bg-pink-600 text-white'
-                    : 'border-pink-200 hover:bg-pink-50'
+                    : 'border-pink-200 dark:border-pink-600 hover:bg-pink-50 dark:hover:bg-pink-900/20 text-pink-700 dark:text-pink-300'
                 }`}
               >
                 <Bookmark className={`w-4 h-4 mr-2 ${isFavorite ? 'fill-current' : ''}`} />
@@ -171,7 +171,7 @@ const ProductDetailModal = ({
               <Button
                 onClick={handleShare}
                 variant="outline"
-                className="border-purple-200 hover:bg-purple-50"
+                className="border-purple-200 dark:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 text-purple-700 dark:text-purple-300"
               >
                 <Share className="w-4 h-4 mr-2" />
                 Compartilhar
@@ -179,12 +179,12 @@ const ProductDetailModal = ({
             </div>
 
             {product.featured && (
-              <div className="bg-gradient-to-r from-pink-50 to-purple-50 p-4 rounded-lg border border-pink-100">
+              <div className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 p-4 rounded-lg border border-pink-100 dark:border-pink-800">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-lg">✨</span>
-                  <h4 className="font-semibold text-pink-700">Produto em Destaque</h4>
+                  <h4 className="font-semibold text-pink-700 dark:text-pink-300">Produto em Destaque</h4>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-slate-300">
                   Este produto faz parte da nossa seleção especial de trabalhos em destaque!
                 </p>
               </div>

@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -47,6 +46,7 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  /* Tema escuro só quando explicitamente aplicado */
   .dark {
     --background: 240 10% 8%;
     --foreground: 0 0% 95%;
@@ -83,22 +83,70 @@
     @apply border-border;
   }
 
+  /* Tema claro como padrão */
   body {
     @apply bg-gradient-to-br from-pink-50 via-white to-purple-50 text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
+  /* Tema escuro só quando explicitamente aplicado */
   .dark body {
     @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900;
     color: hsl(var(--foreground));
   }
+
+  /* Melhorar acessibilidade dos botões em mobile */
+  button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* Garantir que botões sejam clicáveis em mobile */
+  @media (max-width: 640px) {
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      position: relative;
+      z-index: 10;
+      pointer-events: auto !important;
+    }
+    
+    /* Melhorar área de toque para botões pequenos */
+    button[data-size="sm"] {
+      min-height: 36px;
+      min-width: 36px;
+    }
+
+    /* Garantir que botões de ação sejam sempre clicáveis */
+    .action-button {
+      position: relative;
+      z-index: 20;
+      pointer-events: auto !important;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Melhorar feedback visual para botões de exclusão */
+    .delete-button {
+      position: relative;
+      z-index: 30;
+      pointer-events: auto !important;
+    }
+
+    .delete-button:active {
+      transform: scale(0.95);
+      background-color: rgb(239 68 68 / 0.1);
+    }
+  }
 }
 
 @layer components {
+  /* Tema claro como padrão */
   .gradient-card {
     @apply bg-gradient-to-br from-white to-pink-50/30 border border-pink-100/50 backdrop-blur-sm;
   }
   
+  /* Tema escuro só quando explicitamente aplicado */
   .dark .gradient-card {
     @apply bg-gradient-to-br from-slate-800/90 to-slate-700/50 border border-slate-600/30 backdrop-blur-sm;
   }
@@ -179,5 +227,28 @@
 
   .dark .text-popover-foreground {
     @apply text-slate-100;
+  }
+
+  /* Melhorar acessibilidade dos botões de ação em mobile */
+  .action-button {
+    @apply relative overflow-hidden;
+  }
+
+  .action-button::before {
+    content: '';
+    @apply absolute inset-0 bg-current opacity-0 transition-opacity duration-200;
+  }
+
+  .action-button:active::before {
+    @apply opacity-10;
+  }
+
+  /* Garantir que botões de exclusão sejam bem visíveis */
+  .delete-button {
+    @apply relative z-10;
+  }
+
+  .delete-button:hover {
+    @apply transform scale-105 transition-transform duration-200;
   }
 }

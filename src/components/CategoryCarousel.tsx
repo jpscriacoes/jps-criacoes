@@ -42,6 +42,7 @@ const CategoryCarousel = ({
       name: product.name,
       description: product.description,
       category: product.categories?.name || '',
+      categoryId: product.category_id,
       material: product.material,
       occasion: product.occasion,
       theme: product.theme,
@@ -89,9 +90,9 @@ const CategoryCarousel = ({
   };
 
   return (
-    <Card className="overflow-hidden bg-white/90 dark:bg-gray-800/90 shadow-lg">
+    <Card className="overflow-hidden bg-white/90 dark:bg-slate-800/90 shadow-lg border-0 dark:border-slate-700">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-lg">
+        <CardTitle className="flex items-center gap-2 text-lg text-gray-900 dark:text-slate-100">
           <CategoryIcon icon={categoryIcon} className="w-7 h-7" />
           {categoryName}
           <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -108,7 +109,7 @@ const CategoryCarousel = ({
               size="icon"
               onClick={prevSlide}
               disabled={currentIndex === 0}
-              className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 shadow-md"
+              className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-white/80 hover:bg-white dark:bg-slate-700/80 dark:hover:bg-slate-600 shadow-md border-gray-200 dark:border-slate-600 text-gray-700 dark:text-slate-200"
             >
               <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
@@ -150,7 +151,7 @@ const CategoryCarousel = ({
               size="icon"
               onClick={nextSlide}
               disabled={currentIndex >= maxIndex}
-              className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-white/80 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 shadow-md"
+              className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10 bg-white/80 hover:bg-white dark:bg-slate-700/80 dark:hover:bg-slate-600 shadow-md border-gray-200 dark:border-slate-600 text-gray-700 dark:text-slate-200"
             >
               <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
@@ -165,7 +166,7 @@ const CategoryCarousel = ({
                 className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-200 ${
                   index === currentIndex 
                     ? 'bg-pink-500 w-4 sm:w-6' 
-                    : 'bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500'
+                    : 'bg-gray-300 hover:bg-gray-400 dark:bg-slate-600 dark:hover:bg-slate-500'
                 }`}
                 onClick={() => setCurrentIndex(index)}
               />

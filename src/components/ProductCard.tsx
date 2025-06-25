@@ -58,13 +58,13 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
       <div className="relative w-full aspect-[4/3] sm:aspect-[3/3] md:aspect-[4/3] lg:aspect-[3/4] overflow-hidden bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600">
         {!imageLoaded && !imageError && (
           <div className="absolute inset-0 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 animate-pulse flex items-center justify-center">
-            <div className="text-gray-400 text-xs">Carregando...</div>
+            <div className="text-gray-400 dark:text-gray-300 text-xs">Carregando...</div>
           </div>
         )}
         
         {imageError ? (
           <div className="absolute inset-0 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center">
-            <div className="text-center text-gray-500 dark:text-gray-400 p-4">
+            <div className="text-center text-gray-500 dark:text-gray-300 p-4">
               <div className="text-2xl mb-2">🖼️</div>
               <div className="text-xs">Imagem não disponível</div>
             </div>
@@ -81,19 +81,19 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
           />
         )}
         
-        {/* Badge da Categoria */}
+        {/* Badge da Categoria - Melhorado para tema escuro */}
         <div className="absolute top-2 left-2">
-          <Badge className="bg-white/95 text-gray-700 border-0 text-xs px-2 py-1 shadow-sm backdrop-blur-sm">
+          <Badge className="bg-white/95 dark:bg-slate-800/95 text-gray-700 dark:text-slate-100 border-0 dark:border-slate-600 text-xs px-2 py-1 shadow-sm backdrop-blur-sm">
             {product.category}
           </Badge>
         </div>
         
-        {/* Botões de Ação */}
+        {/* Botões de Ação - Melhorados para tema escuro */}
         <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <Button
             size="sm"
             variant="secondary"
-            className="w-8 h-8 p-0 bg-white/95 hover:bg-white border-0 shadow-md backdrop-blur-sm"
+            className="w-8 h-8 p-0 bg-white/95 dark:bg-slate-800/95 hover:bg-white dark:hover:bg-slate-700 border-0 dark:border-slate-600 shadow-md backdrop-blur-sm text-gray-700 dark:text-slate-100"
             onClick={handleShare}
           >
             <Share className="w-3.5 h-3.5" />
@@ -104,7 +104,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
             className={`w-8 h-8 p-0 border-0 shadow-md backdrop-blur-sm transition-all duration-200 ${
               isFavorite 
                 ? 'bg-pink-500 text-white hover:bg-pink-600' 
-                : 'bg-white/95 hover:bg-white text-gray-600'
+                : 'bg-white/95 dark:bg-slate-800/95 hover:bg-white dark:hover:bg-slate-700 text-gray-600 dark:text-slate-200 border-0 dark:border-slate-600'
             }`}
             onClick={handleFavorite}
           >
@@ -112,7 +112,7 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
           </Button>
         </div>
         
-        {/* Badge de Destaque */}
+        {/* Badge de Destaque - Melhorado para tema escuro */}
         {product.featured && (
           <div className="absolute bottom-2 left-2">
             <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white border-0 text-xs px-2 py-1 shadow-md">
@@ -124,20 +124,20 @@ const ProductCard = ({ product, isFavorite, onToggleFavorite, onClick }: Product
       
       {/* Conteúdo do Card - Compacto */}
       <CardContent className="p-2 sm:p-3 md:p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-xs sm:text-sm md:text-base mb-1 sm:mb-2 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] leading-tight">
+        <h3 className="font-semibold text-xs sm:text-sm md:text-base mb-1 sm:mb-2 line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] leading-tight text-gray-900 dark:text-slate-100">
           {product.name}
         </h3>
         
         <div className="flex flex-wrap gap-1 mb-2">
-          <Badge variant="outline" className="text-[10px] sm:text-xs border-pink-200 text-pink-700 dark:border-pink-800 dark:text-pink-300 px-1.5 py-0.5">
+          <Badge variant="outline" className="text-[10px] sm:text-xs border-pink-200 dark:border-pink-600 text-pink-700 dark:text-pink-300 px-1.5 py-0.5 bg-pink-50/50 dark:bg-pink-900/20">
             {product.material}
           </Badge>
-          <Badge variant="outline" className="text-[10px] sm:text-xs border-purple-200 text-purple-700 dark:border-purple-800 dark:text-purple-300 px-1.5 py-0.5">
+          <Badge variant="outline" className="text-[10px] sm:text-xs border-purple-200 dark:border-purple-600 text-purple-700 dark:text-purple-300 px-1.5 py-0.5 bg-purple-50/50 dark:bg-purple-900/20">
             {product.theme}
           </Badge>
         </div>
         
-        <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground mt-auto leading-relaxed line-clamp-2">
+        <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground dark:text-slate-400 mt-auto leading-relaxed line-clamp-2">
           {product.occasion}
         </p>
       </CardContent>
