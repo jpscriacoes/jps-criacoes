@@ -13,7 +13,6 @@ import { useProducts, useTransformedProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
 import { TransformedProduct } from '@/types';
 import CategoryIcon from '@/components/CategoryIcon';
-import PWALifecycle from '@/components/PWALifecycle';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -126,11 +125,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* PWA Lifecycle Status - Mobile Only */}
-        <div className="block md:hidden mb-8">
-          <PWALifecycle />
-        </div>
-
         {/* Featured Categories */}
         {categories && categories.length > 0 && (
           <section className="mb-8">
@@ -169,13 +163,6 @@ const Index = () => {
             </div>
           </section>
         )}
-
-        {/* PWA Lifecycle Status - Desktop Only */}
-        <div className="hidden md:block mb-8">
-          <div className="flex justify-center">
-            <PWALifecycle />
-          </div>
-        </div>
       </main>
       
       <Footer />
